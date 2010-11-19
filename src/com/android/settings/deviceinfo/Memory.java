@@ -153,7 +153,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         if (preference == mSdMountToggle) {
-            String status = Environment.getExternalStorageState();
+            String status = Environment.getExternalSDStorageState();
             if (status.equals(Environment.MEDIA_MOUNTED)) {
                 unmount();
             } else {
@@ -206,12 +206,24 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         // Present a toast here
         Toast.makeText(this, R.string.unmount_inform_text, Toast.LENGTH_SHORT).show();
         IMountService mountService = getMountService();
-        String extStoragePath = Environment.getExternalStorageDirectory().toString();
+        String extSDStoragePath = Environment.getExternalSDStorageDirectory().toString();
+        String extExtSDStoragePath = Environment.getExternalExtSDStorageDirectory().toString();
+        String extUDiskStoragePath = Environment.getExternalUDiskStorageDirectory().toString();
+        
         try {
             mSdMountToggle.setEnabled(false);
             mSdMountToggle.setTitle(mRes.getString(R.string.sd_ejecting_title));
             mSdMountToggle.setSummary(mRes.getString(R.string.sd_ejecting_summary));
-            mountService.unmountVolume(extStoragePath, force);
+            if (Environment.getExternalSDStorageState().equals(Environment.MEDIA_MOUNTED))
+            {
+                mountService.unmountVolume(extSDStoragePath, force);
+            }
+            if (Environment.getExternalExtSDStorageState().equals(Environment.MEDIA_MOUNTED))
+            {
+                mountService.unmountVolume(extExtSDStoragePath, force);
+            }
+            if (Environment.getExternalUDiskStorageState().equals(Environment.MEDIA_MOUNTED))
+                mountService.unmountVolume(extUDiskStoragePath, force);
         } catch (RemoteException e) {
             // Informative dialog to user that
             // unmount failed.
@@ -260,7 +272,9 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
         IMountService mountService = getMountService();
         try {
             if (mountService != null) {
-                mountService.mountVolume(Environment.getExternalStorageDirectory().toString());
+                mountService.mountVolume(Environment.getExternalSDStorageDirectory().toString());
+                mountService.mountVolume(Environment.getExternalExtSDStorageDirectory().toString());
+                mountService.mountVolume(Environment.getExternalUDiskStorageDirectory().toString());
             } else {
                 Log.e(TAG, "Mount service is null, can't mount");
             }
@@ -269,7 +283,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
     }
 
     private void updateMemoryStatus() {
-        String status = Environment.getExternalStorageState();
+        String status = Environment.getExternalSDStorageState();
         String readOnly = "";
         if (status.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
             status = Environment.MEDIA_MOUNTED;
