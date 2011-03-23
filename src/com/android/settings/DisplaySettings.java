@@ -17,6 +17,7 @@
 package com.android.settings;
 
 import static android.provider.Settings.System.SCREEN_OFF_TIMEOUT;
+import static android.provider.Settings.System.XEC_DLS_CONTROL;
 
 import java.util.ArrayList;
 
@@ -41,12 +42,15 @@ public class DisplaySettings extends PreferenceActivity implements
 
     /** If there is no setting in the provider, use this. */
     private static final int FALLBACK_SCREEN_TIMEOUT_VALUE = 30000;
+    private static final int FALLBACK_XEC_DLS_CONTROL_VALUE = 0x0;
 
     private static final String KEY_SCREEN_TIMEOUT = "screen_timeout";
     private static final String KEY_ANIMATIONS = "animations";
+    private static final String KEY_XEC_DLS_CONTROL = "xec_dls_control";
     private static final String KEY_ACCELEROMETER = "accelerometer";
 
     private ListPreference mAnimations;
+    private ListPreference mXecDlsControl;
     private CheckBoxPreference mAccelerometer;
     private float[] mAnimationScales;
 
@@ -62,7 +66,11 @@ public class DisplaySettings extends PreferenceActivity implements
 
         mAnimations = (ListPreference) findPreference(KEY_ANIMATIONS);
         mAnimations.setOnPreferenceChangeListener(this);
-        mAccelerometer = (CheckBoxPreference) findPreference(KEY_ACCELEROMETER);
+       
+		mXecDlsControl = (ListPreference) findPreference(KEY_XEC_DLS_CONTROL);
+        mXecDlsControl.setOnPreferenceChangeListener(this);
+        
+		mAccelerometer = (CheckBoxPreference) findPreference(KEY_ACCELEROMETER);
         mAccelerometer.setPersistent(false);
 
         ListPreference screenTimeoutPreference =
@@ -199,7 +207,15 @@ public class DisplaySettings extends PreferenceActivity implements
                 Log.e(TAG, "could not persist screen timeout setting", e);
             }
         }
-
+        if (KEY_XEC_DLS_CONTROL.equals(key)) {
+            int value = Integer.parseInt((String) objValue);
+            try {
+                Settings.System.putInt(getContentResolver(),
+                        XEC_DLS_CONTROL, value);
+            } catch (NumberFormatException e) {
+                Log.e(TAG, "could not persist xec dls setting", e);
+            }
+        }		
         return true;
     }
 }

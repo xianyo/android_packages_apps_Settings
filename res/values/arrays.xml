@@ -72,6 +72,30 @@
         <item>11</item>
     </string-array>
 
+    <!-- Display settings.  The type of xec dls control to show. -->
+    <string-array name="xec_dls_control_entries">
+        <item>Xec Dls Disabled</item>
+        <item>Xec Dls Enabled with Log on Screen</item>
+        <item>Xec Dls Enabled without log</item>
+    </string-array>
+
+    <!-- Display settings.  Summary for each type of xec dls control. -->
+    <string-array name="xec_dls_control_summaries">
+        <item>Xec dls processing is disabled in video playback</item>
+        <item>Xec dls processing enabled, with power log shown on the screen</item>
+        <item>Xec dls processing disabled, with no log shown</item>
+    </string-array>
+
+    <!-- Do not translate. -->
+    <string-array name="xec_dls_control_values">
+        <!-- Do not translate. -->
+        <item>00</item>
+        <!-- Do not translate. -->
+        <item>01</item>
+        <!-- Do not translate. -->
+        <item>11</item>
+    </string-array>
+
     <!-- Display settings.  The delay in inactivity before the screen is turned off. These are shown ain a list dialog. -->
     <string-array name="screen_timeout_entries">
         <item>15 seconds</item>

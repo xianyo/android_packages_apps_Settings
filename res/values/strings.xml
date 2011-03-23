@@ -1152,6 +1152,12 @@
     <string name="animations_summary_on">Show animation when opening &amp; closing windows</string>
     <!-- Sound & display settings screen, animations option summary text when check box is clear -->
     <string name="animations_summary_off">Show animation when opening &amp; closing windows</string>
+    <!-- Sound & display settings screen, xec dls control check box label -->
+    <string name="xec_dls_control_title">XEC DLS Control</string>
+    <!-- Sound & display settings screen, xec dls option summary text when check box is selected -->
+    <string name="xec_dls_control_summary_on">Enable XEC DLS processing in video playback</string>
+    <!-- Sound & display settings screen, xec dls option summary text when check box is clear -->
+    <string name="xec_dls_control_summary_off">Enable XEC DLS processing in video playback</string>
     <!-- Sound & display settings screen, accelerometer-based rotation check box label -->
     <string name="accelerometer_title">Auto-rotate screen</string>
     <!-- Sound & display settings screen, accelerometer-based rotation summary text when check box is selected -->
