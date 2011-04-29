@@ -1303,6 +1303,14 @@
     <string name="sd_memory" product="nosdcard">USB storage</string>
     <!-- SD card & phone storage settings screen heading. This is displayed above items that pertain to the SD card -->
     <string name="sd_memory" product="default">SD card</string>
+    <!-- EXTSD card & phone storage settings screen heading. This is displayed above items that pertain to the EXTSD card [CHAR LIMIT=30] -->
+    <string name="extsd_memory" product="nosdcard">USB storage</string>
+    <!-- EXTSD card & phone storage settings screen heading. This is displayed above items that pertain to the EXTSD card -->
+    <string name="extsd_memory" product="default">EXTSD card</string>
+    <!-- U disk & phone storage settings screen heading. This is displayed above items that pertain to the U disk [CHAR LIMIT=30] -->
+    <string name="udisk_memory" product="nosdcard">USB storage</string>
+    <!-- U disk & phone storage settings screen heading. This is displayed above items that pertain to the U disk -->
+    <string name="udisk_memory" product="default">U disk</string>
     <!-- SD card & phone storage settings title. The amount of free space for some storage partition.  For example, this is listed under both the "Internal phone storage" section and the "SD card" section. -->
     <string name="memory_available">Available space</string>
     <!-- SD card & phone storage settings screen heading.  The total amount of storage space for some storage partition.  For example, this is listed under both the "Internal phone storage" section and the "SD card" section -->
@@ -1313,11 +1321,32 @@
     <string name="sd_eject_summary" product="nosdcard">Unmount the internal USB storage</string>
     <!-- SD card & phone storage settings item title that will result in the phone unmounting the SD card.  This will be done before the user phyiscally removes the SD card from the phone.  Kind of like the "Safely remove" on some operating systems.   -->
     <string name="sd_eject_summary" product="default">Unmount the SD card so you can safely remove it</string>
+    <!-- EXTSD card & phone storage settings item title that will result in the phone unmounting the EXTSD card.  This will be done before the user phyiscally removes the EXTSD card from the phone.  Kind of like the "Safely remove" on some operating systems.   [CHAR LIMIT=25] -->
+    <string name="extsd_eject" product="default">Unmount EXTSD card</string>
+    <!-- EXTSD card & phone storage settings item title that will result in the phone unmounting the EXTSD card.  This will be done before the user phyiscally removes the EXTSD card from the phone.  Kind of like the "Safely remove" on some operating systems.   [CHAR LIMIT=30] -->
+    <string name="extsd_eject_summary" product="nosdcard">Unmount the internal USB storage</string>
+    <!-- EXTSD card & phone storage settings item title that will result in the phone unmounting the EXTSD card.  This will be done before the user phyiscally removes the EXTSD card from the phone.  Kind of like the "Safely remove" on some operating systems.   -->
+    <string name="extsd_eject_summary" product="default">Unmount the EXTSD card so you can safely remove it</string>
+    <!-- U disk & phone storage settings item title that will result in the phone unmounting the U disk.  This will be done before the user phyiscally removes the U disk from the phone.  Kind of like the "Safely remove" on some operating systems.   [CHAR LIMIT=25] -->
+    <string name="udisk_eject" product="default">Unmount U disk</string>
+    <!-- U disk & phone storage settings item title that will result in the phone unmounting the U disk.  This will be done before the user phyiscally removes the U disk from the phone.  Kind of like the "Safely remove" on some operating systems.   [CHAR LIMIT=30] -->
+    <string name="udisk_eject_summary" product="nosdcard">Unmount the internal USB storage</string>
+    <!-- U disk & phone storage settings item title that will result in the phone unmounting the U disk.  This will be done before the user phyiscally removes the U disk from the phone.  Kind of like the "Safely remove" on some operating systems.   -->
+    <string name="udisk_eject_summary" product="default">Unmount the U disk so you can safely remove it</string>
 
     <!-- SD card & phone storage settings item summary that is displayed when no SD card is inserted.  This version of the string can probably never come up on current hardware. [CHAR LIMIT=25] -->
     <string name="sd_insert_summary" product="nosdcard">Insert USB storage for mounting</string>
     <!-- SD card & phone storage settings item summary that is displayed when no SD card is inserted -->
     <string name="sd_insert_summary" product="default">Insert an SD card for mounting</string>
+    <!-- EXTSD card & phone storage settings item summary that is displayed when no EXTSD card is inserted.  This version of the string can probably never come up on current hardware. [CHAR LIMIT=25] -->
+    <string name="extsd_insert_summary" product="nosdcard">Insert USB storage for mounting</string>
+    <!-- EXTSD card & phone storage settings item summary that is displayed when no EXTSD card is inserted -->
+    <string name="extsd_insert_summary" product="default">Insert an EXTSD card for mounting</string>
+    <!-- U disk & phone storage settings item summary that is displayed when no U disk is inserted.  This version of the string can probably never come up on current hardware. [CHAR LIMIT=25] -->
+    <string name="udisk_insert_summary" product="nosdcard">Insert USB storage for mounting</string>
+    <!-- U disk & phone storage settings item summary that is displayed when no U disk is inserted -->
+    <string name="udisk_insert_summary" product="default">Insert an U disk for mounting</string>
+
 
     <!-- Storage setting item that will mount USB storage if it unmounted. A user should never see this. [CHAR LIMIT=25] -->
     <string name="sd_mount" product="nosdcard">Mount USB storage</string>
@@ -1327,6 +1356,22 @@
     <string name="sd_mount_summary" product="nosdcard">Mount the USB storage</string>
     <!-- SD card & phone storage settings item title that will result in the phone mounting the SD card. -->
     <string name="sd_mount_summary" product="default">Mount the SD card</string>
+    <!-- Storage setting item that will mount USB storage if it unmounted. A user should never see this. [CHAR LIMIT=25] -->
+    <string name="extsd_mount" product="nosdcard">Mount USB storage</string>
+    <!-- SD card & phone storage settings item title that will result in the phone mounting the SD card. [CHAR LIMIT=25] -->
+    <string name="extsd_mount" product="default">Mount EXTSD card</string>
+    <!-- Subtext for Mount USB storage in Storage settings. User should never see this. -->
+    <string name="extsd_mount_summary" product="nosdcard">Mount the USB storage</string>
+    <!-- SD card & phone storage settings item title that will result in the phone mounting the SD card. -->
+    <string name="extsd_mount_summary" product="default">Mount the EXTSD card</string>
+    <!-- Storage setting item that will mount USB storage if it unmounted. A user should never see this. [CHAR LIMIT=25] -->
+    <string name="udisk_mount" product="nosdcard">Mount USB storage</string>
+    <!-- SD card & phone storage settings item title that will result in the phone mounting the SD card. [CHAR LIMIT=25] -->
+    <string name="udisk_mount" product="default">Mount U disk card</string>
+    <!-- Subtext for Mount USB storage in Storage settings. User should never see this. -->
+    <string name="udisk_mount_summary" product="nosdcard">Mount the USB storage</string>
+    <!-- SD card & phone storage settings item title that will result in the phone mounting the SD card. -->
+    <string name="udisk_mount_summary" product="default">Mount the U disk</string>
 
     <!-- SD card & phone storage settings item title that will result in the phone formatting the USB storage.   [CHAR LIMIT=25] -->
     <string name="sd_format" product="nosdcard">Erase USB storage</string>
@@ -1338,6 +1383,27 @@
     <string name="sd_format_summary" product="default">Erases all data on the phone\'s SD card, such as music and photos</string>
     <!-- SD card status when it is not available status -->
     <string name="sd_unavailable">Unavailable</string>
+    <!-- SD card & phone storage settings item title that will result in the phone formatting the USB storage.   [CHAR LIMIT=25] -->
+    <string name="extsd_format" product="nosdcard">Erase USB storage</string>
+    <!-- SD card & phone storage settings item title that will result in the phone formatting the SD card.   [CHAR LIMIT=25] -->
+    <string name="extsd_format" product="default">Erase EXTSD card</string>
+    <!-- SD card & phone storage settings item title that will result in the phone unmounting the SD card.   [CHAR LIMIT=30] -->
+    <string name="extsd_format_summary" product="nosdcard">Erases all data on the phone\'s internal USB storage, such as music and photos</string>
+    <!-- SD card & phone storage settings item title that will result in the phone unmounting the SD card.   -->
+    <string name="extsd_format_summary" product="default">Erases all data on the phone\'s EXTSD card, such as music and photos</string>
+    <!-- SD card status when it is not available status -->
+    <string name="extsd_unavailable">Unavailable</string>
+    <!-- SD card & phone storage settings item title that will result in the phone formatting the USB storage.   [CHAR LIMIT=25] -->
+    <string name="udisk_format" product="nosdcard">Erase USB storage</string>
+    <!-- SD card & phone storage settings item title that will result in the phone formatting the SD card.   [CHAR LIMIT=25] -->
+    <string name="udisk_format" product="default">Erase U disk</string>
+    <!-- SD card & phone storage settings item title that will result in the phone unmounting the SD card.   [CHAR LIMIT=30] -->
+    <string name="udisk_format_summary" product="nosdcard">Erases all data on the phone\'s internal USB storage, such as music and photos</string>
+    <!-- SD card & phone storage settings item title that will result in the phone unmounting the SD card.   -->
+    <string name="udisk_format_summary" product="default">Erases all data on the phone\'s U disk, such as music and photos</string>
+    <!-- SD card status when it is not available status -->
+    <string name="udisk_unavailable">Unavailable</string>
+
     <!-- SD card status when it is mounted as read only  -->
     <string name="read_only">\u0020(Read-only)</string>
     <!-- SD card eject confirmation dialog title   [CHAR LIMIT=25] -->
@@ -1364,7 +1430,14 @@
     <string name="sd_ejecting_title">Unmounting</string>
     <!-- SD card eject progress text   -->
     <string name="sd_ejecting_summary">Unmount in progress</string>
-
+    <!-- SD card eject progress title   -->
+    <string name="extsd_ejecting_title">Unmounting</string>
+    <!-- SD card eject progress text   -->
+    <string name="extsd_ejecting_summary">Unmount in progress</string>
+    <!-- SD card eject progress title   -->
+    <string name="udisk_ejecting_title">Unmounting</string>
+    <!-- SD card eject progress text   -->
+    <string name="udisk_ejecting_summary">Unmount in progress</string>
     <!-- Phone info screen, section titles: -->
     <string name="battery_status_title">Battery status</string>
     <!-- Phone info screen, section titles: -->

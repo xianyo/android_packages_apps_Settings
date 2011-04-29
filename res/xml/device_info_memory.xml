@@ -34,6 +34,43 @@
             android:summary="@string/sd_format_summary"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:key="memory_extsd"
+            android:title="@string/extsd_memory">
+        <Preference android:key="memory_extsd_size"
+            style="?android:attr/preferenceInformationStyle"
+            android:title="@string/memory_size"
+            android:summary="00"/>
+        <Preference android:key="memory_extsd_avail"
+            style="?android:attr/preferenceInformationStyle"
+            android:title="@string/memory_available"
+            android:summary="00"/>
+        <Preference android:key="memory_extsd_mount_toggle"
+            android:title="@string/extsd_eject"
+            android:summary="@string/extsd_eject_summary"/>
+        <Preference android:key="memory_extsd_format"
+            android:title="@string/extsd_format"
+            android:summary="@string/extsd_format_summary"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="memory_udisk"
+            android:title="@string/udisk_memory">
+        <Preference android:key="memory_udisk_size"
+            style="?android:attr/preferenceInformationStyle"
+            android:title="@string/memory_size"
+            android:summary="00"/>
+        <Preference android:key="memory_udisk_avail"
+            style="?android:attr/preferenceInformationStyle"
+            android:title="@string/memory_available"
+            android:summary="00"/>
+        <Preference android:key="memory_udisk_mount_toggle"
+            android:title="@string/udisk_eject"
+            android:summary="@string/udisk_eject_summary"/>
+        <Preference android:key="memory_udisk_format"
+            android:title="@string/udisk_format"
+            android:summary="@string/udisk_format_summary"/>
+    </PreferenceCategory>
+
+
     <PreferenceCategory android:title="@string/internal_memory">
         <Preference android:key="memory_internal_avail" 
             style="?android:attr/preferenceInformationStyle" 
