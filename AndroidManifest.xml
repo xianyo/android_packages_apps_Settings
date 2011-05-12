@@ -28,6 +28,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIMAX_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_ETHERNET_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_ETHERNET_STATE" />    
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

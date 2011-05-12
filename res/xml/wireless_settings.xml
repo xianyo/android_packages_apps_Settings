@@ -15,6 +15,11 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+     <CheckBoxPreference
+        android:key="toggle_ethernet"
+        android:title="@string/ethernet_mode"
+        android:summary="@string/ethernet_mode_summary"
+        android:persistent="false" />
 
     <CheckBoxPreference
         android:key="toggle_airplane"

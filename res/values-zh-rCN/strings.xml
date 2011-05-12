@@ -337,6 +337,11 @@
     <string name="nfc_quick_toggle_summary" msgid="1988408027741447231">"使用近距离通信读取和交换标签"</string>
     <string name="nfc_toggle_error" msgid="2233172102497535522">"出现错误。"</string>
     <string name="wifi_quick_toggle_title" msgid="874495178395350104">"Wi-Fi"</string>
+    <string name="ethernet_mode">"以太网"</string>
+    <string name="ethernet_mode_summary">"打开 以太网"</string>
+    <string name="ethernet_starting">"正在打开..."</string>    
+    <string name="ethernet_stopping">"正在关闭..."</string>
+    <string name="ethernet_error">"出错"</string>                
     <string name="wifi_quick_toggle_summary" msgid="1047950931623694366">"打开 Wi-Fi"</string>
     <string name="wifi_settings" msgid="4746946030627213196">"Wi-Fi 设置"</string>
     <string name="wifi_settings_category" msgid="2810363951104753710">"Wi-Fi 设置"</string>

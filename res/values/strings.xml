@@ -487,6 +487,16 @@
     <string name="wireless_networks_settings_title">Wireless &amp; network settings</string>
     <!-- Main Settings screen settings summary text for the "Wireless controls" setting -->
     <string name="radio_controls_summary">Manage Wi-Fi, Bluetooth, airplane mode, mobile networks, &amp; VPNs</string>
+    <!-- Wire controls settings screen, setting check box label -->
+    <string name="ethernet_mode">Ethernet</string>
+    <!-- Wire controls settings screen, setting option summary text -->
+    <string name="ethernet_mode_summary">Turn on ethernet</string>
+    <!-- Summary text when turning ethernet on -->
+    <string name="ethernet_starting">Turning on\u2026</string>
+    <!-- Summary text when turning ethernet off -->
+    <string name="ethernet_stopping">Turning off\u2026</string>
+    <!-- Summary text when ethernet has error -->
+    <string name="ethernet_error">Error</string>
 
 
     <!-- mobile network settings screen, setting check box title -->
