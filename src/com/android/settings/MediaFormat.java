@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.net.Uri;
+
 
 
 import com.android.internal.os.storage.ExternalStorageFormatter;
@@ -57,6 +59,7 @@ public class MediaFormat extends Activity {
                     return;
                 }
                 Intent intent = new Intent(ExternalStorageFormatter.FORMAT_ONLY);
+                intent.setData(getIntent().getData());
                 intent.setComponent(ExternalStorageFormatter.COMPONENT_NAME);
                 startService(intent);
                 finish();

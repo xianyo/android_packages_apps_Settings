@@ -43,6 +43,8 @@ import android.preference.PreferenceScreen;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.widget.Toast;
+import android.net.Uri;
+
 
 import com.android.settings.R;
 
@@ -212,11 +214,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             strSelect = Environment.getExternalSDStorageDirectory().toString();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setClass(this, com.android.settings.MediaFormat.class);
-            try {
-                getMountService().setFormatIndex(0);
-            } catch (RemoteException e) {
-                Log.e(TAG, "setFormatIndex error!");
-            }
+            intent.setData(Uri.parse(Environment.getExternalSDStorageDirectory().toString()));
             startActivity(intent);
             return true;
         }
@@ -234,11 +232,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             strSelect = Environment.getExternalExtSDStorageDirectory().toString();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setClass(this, com.android.settings.MediaFormat.class);
-            try {
-                getMountService().setFormatIndex(1);
-            } catch (RemoteException e) {
-                Log.e(TAG, "setFormatIndex error!");
-            }
+            intent.setData(Uri.parse(Environment.getExternalExtSDStorageDirectory().toString()));
             startActivity(intent);
             return true;
         }
@@ -257,11 +251,7 @@ public class Memory extends PreferenceActivity implements OnCancelListener {
             strSelect = Environment.getExternalUDiskStorageDirectory().toString();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setClass(this, com.android.settings.MediaFormat.class);
-            try {
-                getMountService().setFormatIndex(2);
-            } catch (RemoteException e) {
-                Log.e(TAG, "setFormatIndex error!");
-            }
+            intent.setData(Uri.parse(Environment.getExternalUDiskStorageDirectory().toString()));
             startActivity(intent);
             return true;
         }
