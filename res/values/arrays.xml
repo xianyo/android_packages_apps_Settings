@@ -260,6 +260,22 @@
         <item>802.1x EAP</item>
     </string-array>
 
+    <!-- Wi-Fi settings including WAPI.  The type of security a Wi-Fi network has. -->
+    <string-array name="wifi_wapi_security">
+	<!-- The Wi-Fi network does not have any security. -->
+	<item>Open</item>
+	<!-- Do not translate. -->
+	<item>WEP</item>
+	<!-- Do not translate. -->
+	<item>WPA/WPA2 PSK</item>
+	<!-- Do not translate. -->
+	<item>802.1x EAP</item>
+	<!-- Do not translate. -->
+	<item>WAPI PSK</item>
+	<!-- Do not translate. -->
+	<item>WAPI EAP</item>
+    </string-array>
+
    <!-- Wi-Fi AP settings.  The type of security a Wi-Fi AP supports. -->
    <!-- Note that adding/removing/moving the items will need wifi settings code change. -->
     <string-array name="wifi_ap_security" translatable="false">

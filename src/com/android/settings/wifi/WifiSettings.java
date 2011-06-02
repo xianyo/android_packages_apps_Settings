@@ -52,6 +52,7 @@ import android.view.View;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Toast;
 
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,12 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
     private static final int MENU_ID_CONNECT = Menu.FIRST + 2;
     private static final int MENU_ID_FORGET = Menu.FIRST + 3;
     private static final int MENU_ID_MODIFY = Menu.FIRST + 4;
+
+    /* ATH_WAPI +++ Shoudl sync with AccessPoint.java */
+    static final int SECURITY_EAP = 3;
+    static final int SECURITY_WAPI_PSK = SECURITY_EAP+1;
+    static final int SECURITY_WAPI_EAP = SECURITY_EAP+2;
+    /* ATH_WAPI --- */
 
     private final IntentFilter mFilter;
     private final BroadcastReceiver mReceiver;
@@ -80,6 +87,10 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
     private int mKeyStoreNetworkId = -1;
 
     private AccessPoint mSelected;
+
+    /* ATH_WAPI +++ */
+    private AccessPoint mLastWapiAp;
+    /* ATH_WAPI --- */
     private WifiDialog mDialog;
 
     public WifiSettings() {
@@ -259,12 +270,27 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         } else if (button == WifiDialog.BUTTON_SUBMIT && mDialog != null) {
             WifiConfiguration config = mDialog.getConfig();
 
+            /* Atheros +++ */
+            if (mSelected != null &&
+                            (mSelected.security == SECURITY_WAPI_PSK || mSelected.security == SECURITY_WAPI_EAP)) {
+                mLastWapiAp = mSelected;
+            }
+            /* Atheros --- */
             if (config == null) {
                 if (mSelected != null && !requireKeyStore(mSelected.getConfig())) {
                     connect(mSelected.networkId);
                 }
             } else if (config.networkId != -1) {
                 if (mSelected != null) {
+                    /* Atheros +++ */
+                    /*
+                     * Connect the modified ap immediately
+                     * remove it since it may cause EP FULL
+                    priorityRange();
+                    config.priority = ++mLastPriority;
+                    Log.e("ATH", "new priority "+Integer.toString(config.priority));
+                    */
+                    /* Atheros --- */
                     mWifiManager.updateNetwork(config);
                     saveNetworks();
                 }
@@ -421,6 +447,24 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         } else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
             updateConnectionState(WifiInfo.getDetailedStateOf((SupplicantState)
                     intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE)));
+            /* Atheros +++ */
+            if (intent.hasExtra(WifiManager.EXTRA_SUPPLICANT_ERROR)) {
+                int errCode = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, 0);
+                if (errCode == WifiManager.ERROR_AUTHENTICATING && mLastWapiAp != null )  {
+                    for (int i = mAccessPoints.getPreferenceCount() - 1; i >= 0; --i) {
+                        AccessPoint ap = ((AccessPoint) mAccessPoints.getPreference(i));
+                        if (ap.networkId != -1) {
+                            if (ap.security == mLastWapiAp.security && ap.ssid.equals(mLastWapiAp.ssid)) {
+                                    Log.e("ATH", "Wapi auth error SSID = "+ap.ssid);
+                                    mSelected = ap;
+                                    showDialog(mSelected, true);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+           /* Atheros --- */
         } else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
             updateConnectionState(((NetworkInfo) intent.getParcelableExtra(
                     WifiManager.EXTRA_NETWORK_INFO)).getDetailedState());

@@ -62,6 +62,39 @@
                     android:entries="@array/wifi_security" />
         </LinearLayout>
 
+        <!-- ATH_WAPI -->
+        <LinearLayout android:id="@+id/wapi_eap_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            <TextView
+                    style="?android:attr/textAppearanceSmallInverse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dip"
+                    android:text="@string/wifi_eap_ca_cert" />
+
+            <Spinner android:id="@+id/wapi_ca_cert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/wifi_eap_ca_cert" />
+
+            <TextView
+                    style="?android:attr/textAppearanceSmallInverse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dip"
+                    android:text="@string/wifi_eap_user_cert" />
+
+            <Spinner android:id="@+id/wapi_user_cert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/wifi_eap_user_cert" />
+        </LinearLayout>
+        <!-- ATH_WAPI -->
+
         <LinearLayout android:id="@+id/fields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -169,6 +202,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wifi_show_password" />
+	    <!-- ATH_WAPI -->
+	    <CheckBox android:id="@+id/hexadecimal_password"
+		    style="?android:attr/textAppearanceSmallInverse"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/wifi_hex_password" />
+	    <!-- ATH_WAPI -->
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

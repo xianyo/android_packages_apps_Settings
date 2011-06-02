@@ -847,6 +847,10 @@
     <string name="wifi_status">Status</string>
     <!-- Label for the link speed of the connection -->
     <string name="wifi_speed">Link speed</string>
+    <!-- Atheros -->
+    <string name="wifi_bssid">BSSID</string>
+    <string name="wifi_channel">Channel</string>
+    <!-- Atheros -->
     <!-- Label for the IP address of the connection -->
     <string name="wifi_ip_address">IP address</string>
     <!-- Label for the EAP method of the network -->
@@ -865,6 +869,8 @@
     <string name="wifi_password">Password</string>
     <!-- Label for the check box to show password -->
     <string name="wifi_show_password">Show password.</string>
+    <!-- Label for the check box to show password ATH_WAPI -->
+    <string name="wifi_hex_password">Hexadecimal password.</string>
     <!-- Hint for unchanged fields -->
     <string name="wifi_unchanged">(unchanged)</string>
     <!-- Hint for unspecified fields -->

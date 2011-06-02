@@ -26,6 +26,9 @@ import android.net.NetworkInfo.DetailedState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiConfiguration.AuthAlgorithm;
 import android.net.wifi.WifiConfiguration.KeyMgmt;
+/* ATH_WAPI +++ */
+import android.net.wifi.WifiConfiguration.Protocol;
+/* ATH_WAPI --- */
 import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.security.Credentials;
@@ -62,6 +65,9 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
     private Spinner mEapCaCert;
     private Spinner mPhase2;
     private Spinner mEapUserCert;
+    /* ATH_WAPI +++ */
+    private Spinner mSpinSecurity;
+    /* ATH_WAPI --- */
     private TextView mEapIdentity;
     private TextView mEapAnonymous;
 
@@ -137,7 +143,62 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
                     }
                 }
                 return config;
+            /* ATH_WAPI +++ */
+            case AccessPoint.SECURITY_WAPI_PSK:
+                config.allowedKeyManagement.set(KeyMgmt.WAPI_PSK);
+                config.allowedProtocols.set(Protocol.WAPI);
+                if (mPassword.length() != 0) {
+                    CheckBox hexCheckBox = (CheckBox)mView.findViewById(R.id.hexadecimal_password);
+                    String password = mPassword.getText().toString();
+                    if (hexCheckBox.isChecked()) {
+                        password = password.trim();
+                        if (password.length() > 64) {
+                            password = password.substring(0, 64);
+                        }
 
+			String psk = new String();
+			for (int i = 0; i < password.length(); ++i ) {
+			    char c = password.charAt(i);
+			    psk += Integer.toHexString((int)c);
+			}
+			int cnt = 64 - psk.length();
+			while (cnt-- > 0) {
+			    psk += "0";
+			}
+
+                        config.preSharedKey = psk;
+                    } else {
+                        config.preSharedKey = '"' + password + '"';
+                    }
+                }
+                return config;
+            case AccessPoint.SECURITY_WAPI_EAP:
+                config.allowedKeyManagement.set(KeyMgmt.WAPI_CERT);
+                config.allowedProtocols.set(Protocol.WAPI);
+                /*
+                config.eap.setValue((String) mEapMethod.getSelectedItem());
+
+                config.phase2.setValue((mPhase2.getSelectedItemPosition() == 0) ? "" :
+                        "auth=" + mPhase2.getSelectedItem());
+                config.private_key.setValue((mEapUserCert.getSelectedItemPosition() == 0) ? "" :
+                        KEYSTORE_SPACE + Credentials.USER_PRIVATE_KEY +
+                        (String) mEapUserCert.getSelectedItem());
+                config.identity.setValue((mEapIdentity.length() == 0) ? "" :
+                        mEapIdentity.getText().toString());
+                config.anonymous_identity.setValue((mEapAnonymous.length() == 0) ? "" :
+                        mEapAnonymous.getText().toString());
+                if (mPassword.length() != 0) {
+                    config.password.setValue(mPassword.getText().toString());
+                }
+                */
+                config.ca_cert.setValue((mEapCaCert.getSelectedItemPosition() == 0) ? "" :
+                        KEYSTORE_SPACE + Credentials.USER_CERTIFICATE +
+                        (String) mEapCaCert.getSelectedItem());
+                config.client_cert.setValue((mEapUserCert.getSelectedItemPosition() == 0) ? "" :
+                        KEYSTORE_SPACE + Credentials.USER_CERTIFICATE +
+                        (String) mEapUserCert.getSelectedItem());
+                 return config;
+            /* ATH_WAPI --- */
             case AccessPoint.SECURITY_EAP:
                 config.allowedKeyManagement.set(KeyMgmt.WPA_EAP);
                 config.allowedKeyManagement.set(KeyMgmt.IEEE8021X);
@@ -175,6 +236,21 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
         Context context = getContext();
         Resources resources = context.getResources();
 
+        /* ATH_WAPI +++ */
+        boolean wapi_supported = AccessPoint.getSysWapiSupported();
+        if (wapi_supported) {
+            String[] type = resources.getStringArray(R.array.wifi_wapi_security); 
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                context, android.R.layout.simple_spinner_item, type);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    mSpinSecurity = (Spinner) mView.findViewById(R.id.security);
+            mSpinSecurity.setAdapter(adapter);
+        }
+        /* ATH_WAPI --- */
+        // Atheros +++
+	boolean wifiEng = AccessPoint.isWifiEngEnabled();
+        // Atheros ---
+
         if (mAccessPoint == null) {
             setTitle(R.string.wifi_add_network);
             mView.findViewById(R.id.type).setVisibility(View.VISIBLE);
@@ -186,21 +262,41 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
             setTitle(mAccessPoint.ssid);
             ViewGroup group = (ViewGroup) mView.findViewById(R.id.info);
 
+	// Atheros +++
+            WifiInfo info = mAccessPoint.getInfo();
+            if (wifiEng && mAccessPoint.bssid != null && mAccessPoint.freq != null) {
+                    addRow(group, R.string.wifi_bssid, mAccessPoint.bssid);
+                    addRow(group, R.string.wifi_channel, mAccessPoint.freq);
+            }
+	// Atheros ---
+
             DetailedState state = mAccessPoint.getState();
             if (state != null) {
                 addRow(group, R.string.wifi_status, Summary.get(getContext(), state));
             }
 
             String[] type = resources.getStringArray(R.array.wifi_security);
+            /* ATH_WAPI +++ */
+            if (wapi_supported) {
+                type = resources.getStringArray(R.array.wifi_wapi_security);
+            }
+            /* ATH_WAPI --- */
             addRow(group, R.string.wifi_security, type[mAccessPoint.security]);
 
             int level = mAccessPoint.getLevel();
             if (level != -1) {
                 String[] signal = resources.getStringArray(R.array.wifi_signal);
-                addRow(group, R.string.wifi_signal, signal[level]);
+// Atheros +++
+		if (wifiEng) {
+		    addRow(group, R.string.wifi_signal, signal[level]+"("+mAccessPoint.getRawRssi()+")");
+	        } else
+	            addRow(group, R.string.wifi_signal, signal[level]);
+// Atheros ---
             }
 
-            WifiInfo info = mAccessPoint.getInfo();
+	// Atheros +++
+//            WifiInfo info = mAccessPoint.getInfo();
+	// Atheros +++
             if (info != null) {
                 addRow(group, R.string.wifi_speed, info.getLinkSpeed() + WifiInfo.LINK_SPEED_UNITS);
                 // TODO: fix the ip address for IPv6.
@@ -242,13 +338,38 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
         ((TextView) row.findViewById(R.id.value)).setText(value);
         group.addView(row);
     }
+// Atheros +++
+    private boolean validate_eap() {
 
+        if ( (mEapCaCert.getSelectedItemPosition() == 0 ||
+	      mEapUserCert.getSelectedItemPosition() == 0)) {
+		if (mEapIdentity.length() > 0 &&  mPassword.length() > 0)
+			return true;
+	} else if (mEapCaCert.getSelectedItemPosition() > 0 &&
+			mEapUserCert.getSelectedItemPosition() >= 0) {
+		return true;
+	} else
+		return false;
+
+	return false;
+    }
+// Atheros ---
     private void validate() {
         // TODO: make sure this is complete.
         if ((mSsid != null && mSsid.length() == 0) ||
                 ((mAccessPoint == null || mAccessPoint.networkId == -1) &&
                 ((mSecurity == AccessPoint.SECURITY_WEP && mPassword.length() == 0) ||
-                (mSecurity == AccessPoint.SECURITY_PSK && mPassword.length() < 8)))) {
+                (mSecurity == AccessPoint.SECURITY_PSK && mPassword.length() < 8) ||
+	// Atheros +++
+		(mSecurity == AccessPoint.SECURITY_EAP && validate_eap() != true)
+	// Atheros ---
+        /* ATH_WAPI +++ */
+                || (mSecurity == AccessPoint.SECURITY_WAPI_PSK && mPassword.length() < 8)
+                || (mSecurity == AccessPoint.SECURITY_WAPI_EAP &&
+                    ((mEapCaCert.getSelectedItemPosition() == 0) ||
+                    (mEapUserCert.getSelectedItemPosition() == 0)))
+        /* ATH_WAPI --- */
+                 ))) {
             getButton(BUTTON_SUBMIT).setEnabled(false);
         } else {
             getButton(BUTTON_SUBMIT).setEnabled(true);
@@ -269,7 +390,9 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
     }
     
     public void afterTextChanged(Editable editable) {
-        validate();
+        if (getButton(BUTTON_SUBMIT) != null) {
+            validate();
+        }
     }
 
     public void onItemSelected(AdapterView parent, View view, int position, long id) {
@@ -277,7 +400,15 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
         showSecurityFields();
         validate();
     }
-
+//Atheros +++
+    private AdapterView.OnItemSelectedListener eapListener = new AdapterView.OnItemSelectedListener() {
+	public void onItemSelected(AdapterView parent, View view, int position, long id) {
+	    validate();
+	}
+	public void onNothingSelected(AdapterView parent) {
+	}
+    };
+//Atheros ---
     public void onNothingSelected(AdapterView parent) {
     }
 
@@ -286,6 +417,37 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
             mView.findViewById(R.id.fields).setVisibility(View.GONE);
             return;
         }
+
+        /* ATH_WAPI +++ */
+        CheckBox hexCheckBox = (CheckBox)mView.findViewById(R.id.hexadecimal_password);
+        if (hexCheckBox != null) {
+            hexCheckBox.setVisibility(mSecurity==AccessPoint.SECURITY_WAPI_PSK ? View.VISIBLE : View.GONE);
+        }
+        if (mSecurity == AccessPoint.SECURITY_WAPI_EAP) {
+            mView.findViewById(R.id.fields).setVisibility(View.GONE);
+            mView.findViewById(R.id.wapi_eap_fields).setVisibility(View.VISIBLE);
+            mEapCaCert = (Spinner) mView.findViewById(R.id.wapi_ca_cert);
+            mEapUserCert = (Spinner) mView.findViewById(R.id.wapi_user_cert);
+
+            mEapCaCert.setOnItemSelectedListener(eapListener);
+            mEapUserCert.setOnItemSelectedListener(eapListener);
+
+            loadCertificates(mEapCaCert, Credentials.USER_CERTIFICATE);
+            loadCertificates(mEapUserCert, Credentials.USER_CERTIFICATE);
+
+            if (mAccessPoint != null && mAccessPoint.networkId != -1) {
+                WifiConfiguration config = mAccessPoint.getConfig();
+                setCertificate(mEapCaCert, Credentials.USER_CERTIFICATE,
+                               config.ca_cert.value());
+                setCertificate(mEapUserCert, Credentials.USER_CERTIFICATE,
+                               config.client_cert.value());
+            }
+            return;
+        } else {
+            mView.findViewById(R.id.wapi_eap_fields).setVisibility(View.GONE);
+        }
+        /* ATH_WAPI --- */
+
         mView.findViewById(R.id.fields).setVisibility(View.VISIBLE);
 
         if (mPassword == null) {
@@ -311,7 +473,11 @@ class WifiDialog extends AlertDialog implements View.OnClickListener,
             mEapUserCert = (Spinner) mView.findViewById(R.id.user_cert);
             mEapIdentity = (TextView) mView.findViewById(R.id.identity);
             mEapAnonymous = (TextView) mView.findViewById(R.id.anonymous);
-
+// Atheros +++
+	    mEapIdentity.addTextChangedListener(this);
+	    mEapCaCert.setOnItemSelectedListener(eapListener);
+	    mEapUserCert.setOnItemSelectedListener(eapListener);
+// Atheros ---
             loadCertificates(mEapCaCert, Credentials.CA_CERTIFICATE);
             loadCertificates(mEapUserCert, Credentials.USER_PRIVATE_KEY);
 
