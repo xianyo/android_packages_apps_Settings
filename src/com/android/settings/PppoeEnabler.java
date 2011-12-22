@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.NetworkInfo;
-import android.net.EthernetManager;
+import android.net.PppoeManager;
 import android.preference.Preference;
 import android.preference.CheckBoxPreference;
 import android.provider.Settings;
@@ -31,36 +31,36 @@ import android.text.TextUtils;
 import android.widget.Toast;
 import android.util.Log;
 
-public class EthernetEnabler implements Preference.OnPreferenceChangeListener {
+public class PppoeEnabler implements Preference.OnPreferenceChangeListener {
     private final Context mContext; 
     private final CheckBoxPreference mCheckBox;
     private final CharSequence mOriginalSummary;
 
-    private final EthernetManager mEthernetManager;
+    private final PppoeManager mPppoeManager;
     private final IntentFilter mIntentFilter;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (EthernetManager.ETHERNET_STATE_CHANGED_ACTION.equals(action)) {
-                handleEthernetStateChanged(intent.getIntExtra(
-                        EthernetManager.EXTRA_ETHERNET_STATE, EthernetManager.ETHERNET_STATE_UNKNOWN));
-            } else if (EthernetManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
+            if (PppoeManager.PPPOE_STATE_CHANGED_ACTION.equals(action)) {
+                handlePppoeStateChanged(intent.getIntExtra(
+                        PppoeManager.EXTRA_PPPOE_STATE, PppoeManager.PPPOE_STATE_UNKNOWN));
+            } else if (PppoeManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
                 handleStateChanged(((NetworkInfo) intent.getParcelableExtra(
-                        EthernetManager.EXTRA_NETWORK_INFO)).getDetailedState());
+                        PppoeManager.EXTRA_NETWORK_INFO)).getDetailedState());
             }
         }
     };
 
-    public EthernetEnabler(Context context, CheckBoxPreference checkBox) {
+    public PppoeEnabler(Context context, CheckBoxPreference checkBox) {
         mContext = context;
         mCheckBox = checkBox;
         mOriginalSummary = checkBox.getSummary();
         checkBox.setPersistent(false);
 
-        mEthernetManager = (EthernetManager) context.getSystemService(Context.ETHERNET_SERVICE);
-        mIntentFilter = new IntentFilter(EthernetManager.ETHERNET_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(EthernetManager.NETWORK_STATE_CHANGED_ACTION);
+        mPppoeManager = (PppoeManager) context.getSystemService(Context.PPPOE_SERVICE);
+        mIntentFilter = new IntentFilter(PppoeManager.PPPOE_STATE_CHANGED_ACTION);
+        mIntentFilter.addAction(PppoeManager.NETWORK_STATE_CHANGED_ACTION);
     }
 
     public void resume() {
@@ -77,41 +77,54 @@ public class EthernetEnabler implements Preference.OnPreferenceChangeListener {
     public boolean onPreferenceChange(Preference preference, Object value) {
         boolean enable = (Boolean) value;
 
-        if (mEthernetManager.setEthernetEnabled(enable)) {
+        if (mPppoeManager.setPppoeEnabled(enable)) {
             mCheckBox.setEnabled(false);
         } else {
-            mCheckBox.setSummary(R.string.ethernet_error);
+            mCheckBox.setSummary(R.string.pppoe_error);
         }
 
         // Don't update UI to opposite state until we're sure
         return false;
     }
     
-    private void handleEthernetStateChanged(int state) {
+    private void handlePppoeStateChanged(int state) {
         switch (state) {
-            case EthernetManager.ETHERNET_STATE_ENABLING:
-                mCheckBox.setSummary(R.string.ethernet_starting);
+            case PppoeManager.PPPOE_STATE_ENABLING:
+                mCheckBox.setSummary(R.string.pppoe_starting);
                 mCheckBox.setEnabled(false);
                 break;
-            case EthernetManager.ETHERNET_STATE_ENABLED:
+            case PppoeManager.PPPOE_STATE_ENABLED:
                 mCheckBox.setChecked(true);
                 //mCheckBox.setSummary(null);
-                Log.w("ethernet", "enabled");
                 mCheckBox.setEnabled(true);
                 break;
-            case EthernetManager.ETHERNET_STATE_DISABLING:
-                mCheckBox.setSummary(R.string.ethernet_stopping);
+            case PppoeManager.PPPOE_STATE_DISABLING:
+                mCheckBox.setSummary(R.string.pppoe_stopping);
                 mCheckBox.setEnabled(false);
                 break;
-            case EthernetManager.ETHERNET_STATE_DISABLED:
+            case PppoeManager.PPPOE_STATE_DISABLED:
                 mCheckBox.setChecked(false);
                 mCheckBox.setSummary(mOriginalSummary);
                 mCheckBox.setEnabled(true);
                 break;
+            case PppoeManager.PPPOE_STATE_CHECK_CONNNECT:
+                mCheckBox.setSummary(R.string.pppoe_check_connection);
+                break;
+            case PppoeManager.PPPOE_STATE_NO_ACCOUNT:
+                mCheckBox.setSummary(R.string.pppoe_no_account);
+                break;     
+            case PppoeManager.PPPOE_STATE_MODEM_HUNGUP:
+                mCheckBox.setSummary(R.string.pppoe_modem_hungup);
+                break;  
+            case PppoeManager.PPPOE_STATE_ACCOUNT_UNCORRECT:
+                mCheckBox.setSummary(R.string.pppoe_account_uncorrect);
+                break;  
+                           
             default:
                 mCheckBox.setChecked(false);
-                mCheckBox.setSummary(R.string.ethernet_error);
+                mCheckBox.setSummary(R.string.pppoe_error);
                 mCheckBox.setEnabled(true);
+
         }
     }
 

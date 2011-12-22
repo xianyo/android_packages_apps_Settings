@@ -46,7 +46,7 @@ public class WirelessSettings extends PreferenceActivity {
     private static final String KEY_BT_SETTINGS = "bt_settings";
     private static final String KEY_VPN_SETTINGS = "vpn_settings";
     private static final String KEY_TETHER_SETTINGS = "tether_settings";
-    private static final String KEY_TOGGLE_ETHERNET = "toggle_ethernet";
+
     
     public static final String EXIT_ECM_RESULT = "exit_ecm_result";
     public static final int REQUEST_CODE_EXIT_ECM = 1;
@@ -56,7 +56,7 @@ public class WirelessSettings extends PreferenceActivity {
     private WifiEnabler mWifiEnabler;
     private NfcEnabler mNfcEnabler;
     private BluetoothEnabler mBtEnabler;
-    private EthernetEnabler mEthernetEnabler;
+
     
     /**
      * Invoked on each preference click in this hierarchy, overrides
@@ -97,14 +97,12 @@ public class WirelessSettings extends PreferenceActivity {
         CheckBoxPreference wifi = (CheckBoxPreference) findPreference(KEY_TOGGLE_WIFI);
         CheckBoxPreference bt = (CheckBoxPreference) findPreference(KEY_TOGGLE_BLUETOOTH);
         CheckBoxPreference nfc = (CheckBoxPreference) findPreference(KEY_TOGGLE_NFC);
-        CheckBoxPreference ethernet = (CheckBoxPreference) findPreference(KEY_TOGGLE_ETHERNET);
         
         mAirplaneModeEnabler = new AirplaneModeEnabler(this, airplane);
         mAirplaneModePreference = (CheckBoxPreference) findPreference(KEY_TOGGLE_AIRPLANE);
         mWifiEnabler = new WifiEnabler(this, wifi);
         mBtEnabler = new BluetoothEnabler(this, bt);
         mNfcEnabler = new NfcEnabler(this, nfc);
-        mEthernetEnabler  = new EthernetEnabler(this, ethernet);
 
 
         String toggleable = Settings.System.getString(getContentResolver(),
@@ -181,7 +179,6 @@ public class WirelessSettings extends PreferenceActivity {
         mWifiEnabler.resume();
         mBtEnabler.resume();
         mNfcEnabler.resume();
-        mEthernetEnabler.resume();
     }
 
     @Override
@@ -192,7 +189,6 @@ public class WirelessSettings extends PreferenceActivity {
         mWifiEnabler.pause();
         mBtEnabler.pause();
         mNfcEnabler.pause();
-        mEthernetEnabler.pause();
     }
 
     @Override

@@ -29,7 +29,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_ETHERNET_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_ETHERNET_STATE" />    
+    <uses-permission android:name="android.permission.CHANGE_ETHERNET_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_PPPOE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_PPPOE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CLEAR_APP_USER_DATA" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -87,6 +89,19 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".EthernetSettings"
+                android:label="@string/ethernet_settings"
+                android:configChanges="orientation|keyboardHidden"
+                android:clearTaskOnLaunch="true"
+                >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.settings.PPPOE_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.VOICE_LAUNCH" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+        </activity>
 
         <!-- Top-level settings -->
 

@@ -498,7 +498,49 @@
     <!-- Summary text when ethernet has error -->
     <string name="ethernet_error">Error</string>
 
-
+    <string name="pppoe_account_inputted">Account has been setted</string>
+    <!-- Summary text for account -->
+    <string name="pppoe_account_error">Please input the correct account</string>
+    <!-- Summary text for account -->
+    <string name="pppoe_account_toggle_summary">Please input the account</string>
+    <string name="pppoe_manage_account">Manage PPPOE Account</string>
+    <!-- Used in the 1st-level settings screen to go to the 2nd-level settings screen -->
+    <string name="ethernet_settings">Ethernet settings</string>
+    <!-- Title of the PPPOE settings screen -->
+    <string name="pppoe_settings_category">PPPOE settings</string>
+    <!-- Summary text of the PPPOE settings screen -->
+    <string name="ethernet_settings_summary">Set up &amp; manage ethernet and pppoe</string>
+    <!-- Pppoe controls settings screen, setting check box label -->
+    <string name="pppoe_mode">PPPOE</string>
+    <!-- Pppoe controls settings screen, setting option summary text -->
+    <string name="pppoe_mode_summary">Turn on PPPOE</string>
+    <!-- Summary text when turning pppoe on -->
+    <string name="pppoe_starting">Turning on\u2026</string>
+    <!-- Summary text when turning pppoe off -->
+    <string name="pppoe_stopping">Turning off\u2026</string>
+    <!-- Summary text when pppoe has error -->
+    <string name="pppoe_error">Error</string>
+    <!-- Summary text when pppoe has error -->
+    <string name="pppoe_check_connection">Please check the network connection</string>
+    <!-- Summary text when pppoe has error -->
+    <string name="pppoe_no_account">Please input the ADSL account</string>
+    <!-- Summary text when pppoe has error -->
+    <string name="pppoe_modem_hungup">Modem is hungup, please wait serveral minutes to re-dial</string>
+    <!-- Summary text when pppoe has error -->
+    <string name="pppoe_account_uncorrect">Please check adsl account, it is wrong</string>
+    <!-- Button label to delete a pppoe network -->
+    <string name="pppoe_forget">Forget</string>
+    <!-- Button label to save a pppoe network configuration -->
+    <string name="pppoe_save">Save</string>
+    <!-- Button label to dismiss the dialog -->
+    <string name="pppoe_cancel">Cancel</string>
+    <!-- Label for the password of the secured network -->
+    <string name="pppoe_password">Password</string>
+    <!-- Label for the check box to show password -->
+    <string name="pppoe_show_password">Show password.</string>
+    <!-- Label for the password of the secured network -->
+    <string name="pppoe_username">Username</string>    
+    
     <!-- mobile network settings screen, setting check box title -->
     <string name="roaming">Data roaming</string>
     <!-- mobile network settings screen, setting option summary text when check box is selected -->
