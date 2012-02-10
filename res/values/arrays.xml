@@ -158,7 +158,72 @@
         <item>1.15</item>
         <item>1.30</item>
     </string-array>
-    
+
+    <!-- display 1. -->
+    <string-array name="entries_display_mode_1">
+    </string-array>
+
+    <string-array name="entryvalues_display_mode_1" translatable="false">
+    </string-array>
+
+    <string-array name="entries_display_colordepth_1">
+        <item>16</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="entryvalues_display_colordepth_1" translatable="false">
+        <item>16</item>
+        <item>32</item>
+    </string-array>            
+    <!-- Display 2. -->
+    <string-array name="entries_display_mode_2">
+    </string-array>
+
+    <string-array name="entryvalues_display_mode_2" translatable="false">
+    </string-array>
+
+    <string-array name="entries_display_colordepth_2">
+        <item>16</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="entryvalues_display_colordepth_2" translatable="false">
+        <item>16</item>
+        <item>32</item>
+    </string-array> 
+    <!-- Display 3. -->
+    <string-array name="entries_display_mode_3">
+    </string-array>
+
+    <string-array name="entryvalues_display_mode_3" translatable="false">
+    </string-array>
+
+    <string-array name="entries_display_colordepth_3">
+        <item>16</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="entryvalues_display_colordepth_3" translatable="false">
+        <item>16</item>
+        <item>32</item>
+    </string-array> 
+    <!-- Display 4. -->
+    <string-array name="entries_display_mode_4">
+    </string-array>
+
+    <string-array name="entryvalues_display_mode_4" translatable="false">
+    </string-array>
+
+    <string-array name="entries_display_colordepth_4">
+        <item>16</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="entryvalues_display_colordepth_4" translatable="false">
+        <item>16</item>
+        <item>32</item>
+    </string-array> 
+                
     <!-- TTS settings -->
 
     <!-- Default speech rate choices -->
