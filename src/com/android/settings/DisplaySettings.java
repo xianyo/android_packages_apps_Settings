@@ -33,11 +33,15 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.preference.PreferenceActivity;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 import android.view.IWindowManager;
 import android.view.Surface;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 
@@ -52,6 +56,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
     private static final String KEY_ACCELEROMETER = "accelerometer";
     private static final String KEY_FONT_SIZE = "font_size";
     private static final String KEY_NOTIFICATION_PULSE = "notification_pulse";
+
+    private static final int MENU_ID_DISP = Menu.FIRST;
 
     private CheckBoxPreference mAccelerometer;
     private ListPreference mFontSizePref;
@@ -102,6 +108,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 Log.e(TAG, Settings.System.NOTIFICATION_LIGHT_PULSE + " not found");
             }
         }
+
+        setHasOptionsMenu(true);
     }
 
     private void updateTimeoutPreferenceDescription(long currentTimeout) {
@@ -208,6 +216,32 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         super.onPause();
 
         getContentResolver().unregisterContentObserver(mAccelerometerRotationObserver);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.add(Menu.NONE, MENU_ID_DISP, 0, R.string.pluggable_display_settings)
+                //.setIcon(com.android.internal.R.drawable.stat_sys_data_usb)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_ID_DISP:
+                if (getActivity() instanceof PreferenceActivity) {
+                    ((PreferenceActivity) getActivity()).startPreferencePanel(
+                            PluggableDisplaySettings.class.getCanonicalName(),
+                            null,
+                            R.string.pluggable_display_settings, null,
+                            this, 0);
+                } else {
+                    startFragment(this, PluggableDisplaySettings.class.getCanonicalName(), -1, null);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateState() {
