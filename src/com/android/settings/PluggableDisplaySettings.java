@@ -347,7 +347,8 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             mColorDepthPref[dispid].setValue(String.valueOf(currentDisplayColorDepth));
             mColorDepthPref[dispid].setOnPreferenceChangeListener(this);
             updateDisplayColorDepthPreferenceDescription(dispid, currentDisplayColorDepth);       
-                   
+            mColorDepthPref[dispid].setEnabled(false);
+
             boolean currentDisplayRotation = mDisplayManager.getDisplayRotation(dispid);
             if(DBG) Log.w(TAG,"currentDisplayRotation of 0 " +currentDisplayRotation);
             mRotationPref[dispid].setChecked(currentDisplayRotation);                       
@@ -414,7 +415,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 if(DBG) Log.w(TAG,"currentDisplayOverScan " +currentDisplayOverScan);
                 mOverScanPref[dispid].setProgress(currentDisplayOverScan);
                 mOverScanPref[dispid].setOnPreferenceChangeListener(this);
-                mOverScanPref[dispid].setEnabled(false);
+                //mOverScanPref[dispid].setEnabled(false);
                 
                 int currentDisplayColorDepth = mDisplayManager.getDisplayColorDepth(dispid);
                 if(DBG) Log.w(TAG,"currentDisplayColorDepth " +currentDisplayColorDepth);
