@@ -155,6 +155,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
         // main display device can not set enable, mirror
             getPreferenceScreen().removePreference(mDisplayEnablePref[0]);
             getPreferenceScreen().removePreference(mMirrorPref[0]);
+            getPreferenceScreen().removePreference(mRotationPref[0]);
         
         // remove the unused display ui , when connection is dectect;
         for(int i=1; i<MAX_DISPLAY_DEVICE; i++){
@@ -342,6 +343,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             mDisplayModePref[dispid].setValue(String.valueOf(currentDisplayMode));
             mDisplayModePref[dispid].setOnPreferenceChangeListener(this);
             updateDisplayModePreferenceDescription(dispid, currentDisplayMode);
+            mDisplayModePref[dispid].setEnabled(false);
             
             int currentDisplayColorDepth = mDisplayManager.getDisplayColorDepth(dispid);
             mColorDepthPref[dispid].setValue(String.valueOf(currentDisplayColorDepth));
@@ -349,12 +351,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             updateDisplayColorDepthPreferenceDescription(dispid, currentDisplayColorDepth);       
             mColorDepthPref[dispid].setEnabled(false);
 
-            boolean currentDisplayRotation = mDisplayManager.getDisplayRotation(dispid);
-            if(DBG) Log.w(TAG,"currentDisplayRotation of 0 " +currentDisplayRotation);
-            mRotationPref[dispid].setChecked(currentDisplayRotation);                       
-            mRotationPref[dispid].setOnPreferenceChangeListener(this);
-            mRotationPref[dispid].setEnabled(false);
-                
             int currentDisplayOverScan = mDisplayManager.getDisplayOverScan(dispid);
             mOverScanPref[dispid].setProgress(currentDisplayOverScan);
             mOverScanPref[dispid].setOnPreferenceChangeListener(this);
@@ -369,7 +365,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             getPreferenceScreen().addPreference(mDisplayEnablePref[dispid]);
             getPreferenceScreen().addPreference(mMirrorPref[dispid]);
             getPreferenceScreen().addPreference(mOverScanPref[dispid]);
-            getPreferenceScreen().addPreference(mRotationPref[dispid]);    
             getPreferenceScreen().addPreference(mColorDepthPref[dispid]); 
             getPreferenceScreen().addPreference(mCategoryPref[dispid]); 
                                
@@ -405,12 +400,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 mMirrorPref[dispid].setEnabled(false);
                 mMirrorPref[dispid].setOnPreferenceChangeListener(this);
                 
-                boolean currentDisplayRotation = mDisplayManager.getDisplayRotation(dispid);
-                if(DBG) Log.w(TAG,"currentDisplayRotation " +currentDisplayRotation);
-                mRotationPref[dispid].setChecked(currentDisplayRotation);                       
-                mRotationPref[dispid].setOnPreferenceChangeListener(this);
-                mRotationPref[dispid].setEnabled(false);
-                
                 int currentDisplayOverScan = mDisplayManager.getDisplayOverScan(dispid);
                 if(DBG) Log.w(TAG,"currentDisplayOverScan " +currentDisplayOverScan);
                 mOverScanPref[dispid].setProgress(currentDisplayOverScan);
@@ -439,7 +428,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             getPreferenceScreen().removePreference(mDisplayEnablePref[dispid]);
             getPreferenceScreen().removePreference(mMirrorPref[dispid]);
             getPreferenceScreen().removePreference(mOverScanPref[dispid]);
-            getPreferenceScreen().removePreference(mRotationPref[dispid]);    
             getPreferenceScreen().removePreference(mColorDepthPref[dispid]);
             getPreferenceScreen().removePreference(mCategoryPref[dispid]);
         }
