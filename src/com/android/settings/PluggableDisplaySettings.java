@@ -259,12 +259,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 mDisplayManager.setDisplayMode(dispid, value);
                 updateDisplayModePreferenceDescription(dispid, value);
 
-                // display 0 need to reboot;
-                if(i==0) {
-                    //show diaglog
-                    showRebootDialog();
-                }
-
                 break;
             }
         
@@ -302,11 +296,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 mDisplayManager.setDisplayColorDepth(dispid, value);         
                 updateDisplayColorDepthPreferenceDescription(dispid, value);
 
-                // display 0 need to reboot;
-                if(i==0) {
-                    //show diaglog
-                    showRebootDialog();
-                }
                 break;
             }
         }
@@ -343,7 +332,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             mDisplayModePref[dispid].setValue(String.valueOf(currentDisplayMode));
             mDisplayModePref[dispid].setOnPreferenceChangeListener(this);
             updateDisplayModePreferenceDescription(dispid, currentDisplayMode);
-            mDisplayModePref[dispid].setEnabled(false);
+            //mDisplayModePref[dispid].setEnabled(false);
             
             int currentDisplayColorDepth = mDisplayManager.getDisplayColorDepth(dispid);
             mColorDepthPref[dispid].setValue(String.valueOf(currentDisplayColorDepth));
