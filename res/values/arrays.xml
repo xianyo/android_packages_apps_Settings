@@ -159,6 +159,22 @@
         <item>1.30</item>
     </string-array>
 
+    <!-- display 0. -->
+    <string-array name="entries_display_mode_0">
+    </string-array>
+
+    <string-array name="entryvalues_display_mode_0" translatable="false">
+    </string-array>
+
+    <string-array name="entries_display_colordepth_0">
+        <item>16</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="entryvalues_display_colordepth_0" translatable="false">
+        <item>16</item>
+        <item>32</item>
+    </string-array>            
     <!-- display 1. -->
     <string-array name="entries_display_mode_1">
     </string-array>
@@ -174,7 +190,7 @@
     <string-array name="entryvalues_display_colordepth_1" translatable="false">
         <item>16</item>
         <item>32</item>
-    </string-array>            
+    </string-array>
     <!-- Display 2. -->
     <string-array name="entries_display_mode_2">
     </string-array>
@@ -223,6 +239,22 @@
         <item>16</item>
         <item>32</item>
     </string-array> 
+    <!-- display 5. -->
+    <string-array name="entries_display_mode_5">
+    </string-array>
+
+    <string-array name="entryvalues_display_mode_5" translatable="false">
+    </string-array>
+
+    <string-array name="entries_display_colordepth_5">
+        <item>16</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="entryvalues_display_colordepth_5" translatable="false">
+        <item>16</item>
+        <item>32</item>
+    </string-array>
                 
     <!-- TTS settings -->
 

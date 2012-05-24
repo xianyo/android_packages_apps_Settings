@@ -46,7 +46,7 @@ import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 import android.view.IWindowManager;
 import android.view.Surface;
-
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -63,15 +63,22 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
     private static final int DISPLAY_MODE_MSG = 5;    
     private static final int DISPLAY_COLORDEPTH_MSG = 6;    
     
-    private static final int MAX_DISPLAY_DEVICE = 4;    
+    private static final int MAX_DISPLAY_DEVICE = 6;    
 
-    private static final String[] KEY_DISPLAY_ENABLE     = {"display_enable_1","display_enable_2","display_enable_3","display_enable_4"};
-    private static final String[] KEY_DISPLAY_MIRROR     = {"display_mirror_1","display_mirror_2","display_mirror_3","display_mirror_4"};
-    private static final String[] KEY_DISPLAY_OVERSCAN   = {"display_overscan_1","display_overscan_2","display_overscan_3","display_overscan_4"};
-    private static final String[] KEY_DISPLAY_MODE       = {"display_mode_1","display_mode_2","display_mode_3","display_mode_4"};
-    private static final String[] KEY_DISPLAY_ROTATION   = {"display_rotation_1","display_rotation_2","display_rotation_3","display_rotation_4"};
-    private static final String[] KEY_DISPLAY_COLORDEPTH = {"display_colordepth_1","display_colordepth_2","display_colordepth_3","display_colordepth_4"};
-    private static final String[] KEY_DISPLAY_CATEGORY   = {"display_category_1","display_category_2","display_category_3","display_category_4"};
+    private static final String[] KEY_DISPLAY_ENABLE     = {"display_enable_0","display_enable_1","display_enable_2",
+                                                            "display_enable_3","display_enable_4","display_enable_5"};
+    private static final String[] KEY_DISPLAY_MIRROR     = {"display_mirror_0","display_mirror_1","display_mirror_2",
+                                                            "display_mirror_3","display_mirror_4","display_mirror_5"};
+    private static final String[] KEY_DISPLAY_OVERSCAN   = {"display_overscan_0","display_overscan_1","display_overscan_2",
+                                                            "display_overscan_3","display_overscan_4","display_overscan_5"};
+    private static final String[] KEY_DISPLAY_MODE       = {"display_mode_0","display_mode_1","display_mode_2",
+                                                            "display_mode_3","display_mode_4","display_mode_5"};
+    private static final String[] KEY_DISPLAY_ROTATION   = {"display_rotation_0","display_rotation_1","display_rotation_2",
+                                                            "display_rotation_3","display_rotation_4","display_rotation_5"};
+    private static final String[] KEY_DISPLAY_COLORDEPTH = {"display_colordepth_0","display_colordepth_1","display_colordepth_2",
+                                                            "display_colordepth_3","display_colordepth_4","display_colordepth_5"};
+    private static final String[] KEY_DISPLAY_CATEGORY   = {"display_category_0","display_category_1","display_category_2",
+                                                            "display_category_3","display_category_4","display_category_5"};
 
     private DisplayManager mDisplayManager;
     
@@ -93,31 +100,20 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            
-            if (DisplayManager.ACTION_DISPLAY_DEVICE_1_ATTACHED.equals(action))
-            {
+
+            if((DisplayManager.ACTION_DISPLAY_DEVICE_0_ATTACHED.equals(action)) ||
+               (DisplayManager.ACTION_DISPLAY_DEVICE_1_ATTACHED.equals(action)) ||
+               (DisplayManager.ACTION_DISPLAY_DEVICE_2_ATTACHED.equals(action)) ||
+               (DisplayManager.ACTION_DISPLAY_DEVICE_3_ATTACHED.equals(action)) ||
+               (DisplayManager.ACTION_DISPLAY_DEVICE_4_ATTACHED.equals(action)) ||
+               (DisplayManager.ACTION_DISPLAY_DEVICE_5_ATTACHED.equals(action))) {
                 int dispid = intent.getIntExtra(DisplayManager.EXTRA_DISPLAY_DEVICE, -1);
                 boolean connect = intent.getBooleanExtra(DisplayManager.EXTRA_DISPLAY_CONNECT, false);
                 handleDisplayConnected(dispid, connect);
-            } else if (DisplayManager.ACTION_DISPLAY_DEVICE_2_ATTACHED.equals(action))
-            {
-                int dispid = intent.getIntExtra(DisplayManager.EXTRA_DISPLAY_DEVICE, -1);
-                boolean connect = intent.getBooleanExtra(DisplayManager.EXTRA_DISPLAY_CONNECT, false);
-                handleDisplayConnected(dispid, connect);
-            } else if (DisplayManager.ACTION_DISPLAY_DEVICE_3_ATTACHED.equals(action))
-            {
-                int dispid = intent.getIntExtra(DisplayManager.EXTRA_DISPLAY_DEVICE, -1);
-                boolean connect = intent.getBooleanExtra(DisplayManager.EXTRA_DISPLAY_CONNECT, false);
-                handleDisplayConnected(dispid, connect);
-            } else if (DisplayManager.ACTION_DISPLAY_DEVICE_4_ATTACHED.equals(action))
-            {
-                int dispid = intent.getIntExtra(DisplayManager.EXTRA_DISPLAY_DEVICE, -1);
-                boolean connect = intent.getBooleanExtra(DisplayManager.EXTRA_DISPLAY_CONNECT, false);
-                handleDisplayConnected(dispid, connect);
-            }else if (DisplayManager.ACTION_DISPLAY_STATE.equals(action)) {
+            } else if (DisplayManager.ACTION_DISPLAY_STATE.equals(action)) {
                 int dispid = intent.getIntExtra(DisplayManager.EXTRA_DISPLAY_DEVICE, -1);
                 handleDisplayStateChanged(dispid, intent.getIntExtra(
-                    DisplayManager.EXTRA_DISPLAY_STATE, DisplayManager.DISPLAY_STATE_UNKNOWN));
+                DisplayManager.EXTRA_DISPLAY_STATE, DisplayManager.DISPLAY_STATE_UNKNOWN));
             }
         }
     };
@@ -132,42 +128,15 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
         mDisplayManager = (DisplayManager)getSystemService(Context.DISPLAYMANAGER_SERVICE);
 
         for(int i=0; i<MAX_DISPLAY_DEVICE; i++){
-            mDisplayModePref[i] = (ListPreference) findPreference(KEY_DISPLAY_MODE[i]);
-            mDisplayModePref[i].setOnPreferenceChangeListener(this);
-        
-            mDisplayEnablePref[i] = (CheckBoxPreference) findPreference(KEY_DISPLAY_ENABLE[i]);
-            mDisplayEnablePref[i].setOnPreferenceChangeListener(this);
+            mDisplayModePref[i] = null;
+            mDisplayEnablePref[i] = null;
+            mMirrorPref[i] = null;
+            mOverScanPref[i] = null;
+            mRotationPref[i] = null;
+            mColorDepthPref[i] = null;
+            mCategoryPref[i] = null;
+        }
 
-            mMirrorPref[i]        = (CheckBoxPreference) findPreference(KEY_DISPLAY_MIRROR[i]);
-            mMirrorPref[i].setOnPreferenceChangeListener(this);
-        
-            mOverScanPref[i]      = (SeekBarPreference) findPreference(KEY_DISPLAY_OVERSCAN[i]);
-            mOverScanPref[i].setOnPreferenceChangeListener(this);        
-            mRotationPref[i]      = (CheckBoxPreference) findPreference(KEY_DISPLAY_ROTATION[i]);
-            mRotationPref[i].setOnPreferenceChangeListener(this);
-            mColorDepthPref[i]    = (ListPreference) findPreference(KEY_DISPLAY_COLORDEPTH[i]);
-            mColorDepthPref[i].setOnPreferenceChangeListener(this);
-            
-            mCategoryPref[i]      = (PreferenceCategory) findPreference(KEY_DISPLAY_CATEGORY[i]);
-        }
-        
-        // remove the unused display ui , when connection is dectect;
-        // main display device can not set enable, mirror
-            getPreferenceScreen().removePreference(mDisplayEnablePref[0]);
-            getPreferenceScreen().removePreference(mMirrorPref[0]);
-            getPreferenceScreen().removePreference(mRotationPref[0]);
-        
-        // remove the unused display ui , when connection is dectect;
-        for(int i=1; i<MAX_DISPLAY_DEVICE; i++){
-            getPreferenceScreen().removePreference(mDisplayModePref[i]);
-            getPreferenceScreen().removePreference(mDisplayEnablePref[i]);
-            getPreferenceScreen().removePreference(mMirrorPref[i]);
-            getPreferenceScreen().removePreference(mOverScanPref[i]);
-            getPreferenceScreen().removePreference(mRotationPref[i]);    
-            getPreferenceScreen().removePreference(mColorDepthPref[i]); 
-            getPreferenceScreen().removePreference(mCategoryPref[i]);               
-        }
-        
         mIntentFilter = new IntentFilter(DisplayManager.ACTION_DISPLAY_DEVICE_1_ATTACHED);
         mIntentFilter.addAction(DisplayManager.ACTION_DISPLAY_DEVICE_2_ATTACHED);
         mIntentFilter.addAction(DisplayManager.ACTION_DISPLAY_DEVICE_3_ATTACHED);
@@ -193,7 +162,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
 
     }
 
-    
     private void updateDisplayModePreferenceDescription(int dispid, String CurrentDisplayMode) {
         ListPreference preference = mDisplayModePref[dispid];
         preference.setSummary(CurrentDisplayMode);
@@ -221,6 +189,10 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 }            
                 case DISPLAY_OVERSCAN_MSG: {
                     mDisplayManager.setDisplayOverScan(msg.arg1, msg.arg2);
+                    View rootView = getActivity().getWindow().peekDecorView();
+                    if(rootView != null) {
+                        rootView.postInvalidate();
+                    }
                     break;
                 }            
                 case DISPLAY_MODE_MSG: {
@@ -276,12 +248,18 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             
             if (KEY_DISPLAY_OVERSCAN[i].equals(key)) {
                 int value = Integer.parseInt(objValue.toString());            
-                Message msg = Message.obtain();
-                msg.what = DISPLAY_OVERSCAN_MSG;
-                msg.arg1 = dispid;
-                msg.arg2 = value;
-                mHandler.removeMessages(DISPLAY_OVERSCAN_MSG);
-                mHandler.sendMessageDelayed(msg, 10);
+                    mDisplayManager.setDisplayOverScan(dispid, value);
+                    View rootView = getActivity().getWindow().peekDecorView();
+                    if(rootView != null) {
+                        rootView.postInvalidateDelayed(200);
+                    }
+
+                //Message msg = Message.obtain();
+                //msg.what = DISPLAY_OVERSCAN_MSG;
+                //msg.arg1 = dispid;
+                //msg.arg2 = value;
+                //mHandler.removeMessages(DISPLAY_OVERSCAN_MSG);
+                //mHandler.sendMessageDelayed(msg, 10);
                 break;
             }
 
@@ -302,7 +280,122 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
         
         return true;
     }
-    
+
+    private void addDisplayPreference(int fbid) {
+        String dispKey = null;
+        String dispTitle = null;
+        String dispSummary = null;
+        String dispDialogTitle = null;
+        mCategoryPref[fbid] = new PreferenceCategory(getActivity());
+
+        dispKey = "display_category_" + fbid;
+        mCategoryPref[fbid].setKey(dispKey);
+        mCategoryPref[fbid].setOnPreferenceChangeListener(this);
+        getPreferenceScreen().addPreference(mCategoryPref[fbid]);
+
+        if(fbid != 0) {
+            mDisplayEnablePref[fbid] = new CheckBoxPreference(getActivity());
+
+            dispKey = "display_enable_" + fbid;
+            mDisplayEnablePref[fbid].setKey(dispKey);
+            dispTitle = "Enable Display";
+            mDisplayEnablePref[fbid].setTitle(dispTitle);
+
+            mDisplayEnablePref[fbid].setOnPreferenceChangeListener(this);
+            mCategoryPref[fbid].addPreference(mDisplayEnablePref[fbid]);
+
+            mMirrorPref[fbid] = new CheckBoxPreference(getActivity());
+
+            dispKey = "display_mirror_" + fbid;
+            mMirrorPref[fbid].setKey(dispKey);
+            dispTitle = "Mirror";
+            mMirrorPref[fbid].setTitle(dispTitle);
+
+            mMirrorPref[fbid].setOnPreferenceChangeListener(this);
+            mCategoryPref[fbid].addPreference(mMirrorPref[fbid]);
+        }
+
+        mDisplayModePref[fbid] = new ListPreference(getActivity());
+
+        dispKey = "display_mode_" + fbid;
+        mDisplayModePref[fbid].setKey(dispKey);
+        dispTitle = "Display Mode";
+        mDisplayModePref[fbid].setTitle(dispTitle);
+        dispSummary = "No display plugged";
+        mDisplayModePref[fbid].setSummary(dispSummary);
+        dispDialogTitle = "Display Mode";
+        mDisplayModePref[fbid].setDialogTitle(dispDialogTitle);
+
+        mDisplayModePref[fbid].setOnPreferenceChangeListener(this);
+        mCategoryPref[fbid].addPreference(mDisplayModePref[fbid]);
+
+        mColorDepthPref[fbid] = new ListPreference(getActivity());
+
+        dispKey = "display_colordepth_" + fbid;
+        mColorDepthPref[fbid].setKey(dispKey);
+        dispTitle = "Color Depth";
+        mColorDepthPref[fbid].setTitle(dispTitle);
+        dispSummary = "Color Depth";
+        mColorDepthPref[fbid].setSummary(dispSummary);
+        dispDialogTitle = "Color Depth";
+        mColorDepthPref[fbid].setDialogTitle(dispDialogTitle);
+
+        mColorDepthPref[fbid].setOnPreferenceChangeListener(this);
+        mCategoryPref[fbid].addPreference(mColorDepthPref[fbid]);
+    }
+
+    private int getDisplayColorEntry(int dispid) {
+        int entry = -1;
+
+        switch(dispid) {
+            case 0:
+                entry = R.array.entries_display_colordepth_0;
+                break;
+            case 1:
+                entry = R.array.entries_display_colordepth_1;
+                break;
+            case 2:
+                entry = R.array.entries_display_colordepth_2;
+                break;
+            case 3:
+                entry = R.array.entries_display_colordepth_3;
+                break;
+            case 4:
+                entry = R.array.entries_display_colordepth_4;
+                break;
+            case 5:
+                entry = R.array.entries_display_colordepth_5;
+                break;
+        }
+        return entry;
+    }
+
+    private int getDisplayColorEntryValue(int dispid) {
+        int entryVal = -1;
+
+        switch(dispid) {
+            case 0:
+                entryVal = R.array.entryvalues_display_colordepth_0;
+                break;
+            case 1:
+                entryVal = R.array.entryvalues_display_colordepth_1;
+                break;
+            case 2:
+                entryVal = R.array.entryvalues_display_colordepth_2;
+                break;
+            case 3:
+                entryVal = R.array.entryvalues_display_colordepth_3;
+                break;
+            case 4:
+                entryVal = R.array.entryvalues_display_colordepth_4;
+                break;
+            case 5:
+                entryVal = R.array.entryvalues_display_colordepth_5;
+                break;
+        }
+        return entryVal;
+    }
+
     private void handleDisplayConnected(int dispid, boolean connection){
         String[] display_modes;
         if(DBG) Log.w(TAG, "handleDisplayConnected " + connection + "dispid "+ dispid);
@@ -310,56 +403,32 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             Log.w(TAG, "dispid is no valid");
             return;
         }
-        
-        if(dispid == 0){
 
-            String currentDisplayMode = mDisplayManager.getDisplayMode(dispid);
-
-            display_modes = mDisplayManager.getDisplayModeList(dispid);
-            
-            ArrayList<CharSequence> revisedEntries = new ArrayList<CharSequence>();
-            ArrayList<CharSequence> revisedValues = new ArrayList<CharSequence>();            
-            for (String imode : display_modes) {
-                revisedEntries.add(imode);
-                revisedValues.add(imode);
-            }
-
-            mDisplayModePref[dispid].setEntries(
-                revisedEntries.toArray(new CharSequence[revisedEntries.size()]));
-            mDisplayModePref[dispid].setEntryValues(
-                    revisedValues.toArray(new CharSequence[revisedValues.size()]));
-
-            mDisplayModePref[dispid].setValue(String.valueOf(currentDisplayMode));
-            mDisplayModePref[dispid].setOnPreferenceChangeListener(this);
-            updateDisplayModePreferenceDescription(dispid, currentDisplayMode);
-            //mDisplayModePref[dispid].setEnabled(false);
-            
-            int currentDisplayColorDepth = mDisplayManager.getDisplayColorDepth(dispid);
-            mColorDepthPref[dispid].setValue(String.valueOf(currentDisplayColorDepth));
-            mColorDepthPref[dispid].setOnPreferenceChangeListener(this);
-            updateDisplayColorDepthPreferenceDescription(dispid, currentDisplayColorDepth);       
-            mColorDepthPref[dispid].setEnabled(false);
-
-            int currentDisplayOverScan = mDisplayManager.getDisplayOverScan(dispid);
-            mOverScanPref[dispid].setProgress(currentDisplayOverScan);
-            mOverScanPref[dispid].setOnPreferenceChangeListener(this);
-            mOverScanPref[dispid].setEnabled(false);
-                         
-            return ;            
+        String displayName = null;
+        if(dispid == 0) {
+            displayName = "primary Display: " + mDisplayManager.getDisplayName(dispid);
+        } else {
+            displayName = "added Display: " + mDisplayManager.getDisplayName(dispid);
         }
-        
-        // dispid > 0;
-        if (connection){
-            getPreferenceScreen().addPreference(mDisplayModePref[dispid]);
-            getPreferenceScreen().addPreference(mDisplayEnablePref[dispid]);
-            getPreferenceScreen().addPreference(mMirrorPref[dispid]);
-            getPreferenceScreen().addPreference(mOverScanPref[dispid]);
-            getPreferenceScreen().addPreference(mColorDepthPref[dispid]); 
-            getPreferenceScreen().addPreference(mCategoryPref[dispid]); 
-                               
-            // read the display mode list
+
+        boolean isHDMI = displayName.contains("hdmi");
+
+        if(connection) {
+            if((mCategoryPref[dispid] == null)) {
+                addDisplayPreference(dispid);
+            }
+
+            if((mCategoryPref[dispid] == null) || (mDisplayModePref[dispid] == null)
+                  || (mColorDepthPref[dispid] == null)) {
+                Log.w(TAG, "addDisplayPreference init failed");
+                return;
+            }
+
+            getPreferenceScreen().addPreference(mCategoryPref[dispid]);
+            mCategoryPref[dispid].setTitle(displayName);
+
             String currentDisplayMode = mDisplayManager.getDisplayMode(dispid);
-                            
+
             display_modes = mDisplayManager.getDisplayModeList(dispid);
             
             ArrayList<CharSequence> revisedEntries = new ArrayList<CharSequence>();
@@ -377,7 +446,48 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             mDisplayModePref[dispid].setValue(String.valueOf(currentDisplayMode));
             mDisplayModePref[dispid].setOnPreferenceChangeListener(this);
             updateDisplayModePreferenceDescription(dispid, currentDisplayMode);
-            
+
+            int entry = getDisplayColorEntry(dispid);
+            int entryVal = getDisplayColorEntryValue(dispid);
+            if(entry < 0 || entryVal < 0) {
+                mColorDepthPref[dispid].setEnabled(false);
+            } else {
+                mColorDepthPref[dispid].setEntries(entry);
+                mColorDepthPref[dispid].setEntryValues(entryVal);
+                int currentDisplayColorDepth = mDisplayManager.getDisplayColorDepth(dispid);
+                mColorDepthPref[dispid].setValue(String.valueOf(currentDisplayColorDepth));
+                mColorDepthPref[dispid].setOnPreferenceChangeListener(this);
+                updateDisplayColorDepthPreferenceDescription(dispid, currentDisplayColorDepth);       
+            }
+            if(isHDMI) {
+                if(mOverScanPref[dispid] == null) {
+                    mOverScanPref[dispid] = new SeekBarPreference(getActivity());
+                    String dispStr = "display_overscan_" + dispid;
+                    mOverScanPref[dispid].setKey(dispStr);
+                    dispStr = "OverScan";
+                    mOverScanPref[dispid].setTitle(dispStr);
+                    int value = 15;
+                    mOverScanPref[dispid].setMax(value);
+                    value = 0;
+                    mOverScanPref[dispid].setProgress(value);
+
+                    mOverScanPref[dispid].setOnPreferenceChangeListener(this);
+                    mCategoryPref[dispid].addPreference(mOverScanPref[dispid]);
+                }
+                int currentDisplayOverScan = mDisplayManager.getDisplayOverScan(dispid);
+                mOverScanPref[dispid].setProgress(currentDisplayOverScan);
+                mOverScanPref[dispid].setOnPreferenceChangeListener(this);
+                //mOverScanPref[dispid].setEnabled(false);
+            } else {
+                mColorDepthPref[dispid].setEnabled(false);
+            }
+
+            if(dispid != 0) {
+                if((mDisplayEnablePref[dispid] == null) || (mMirrorPref[dispid] == null)) {
+                    Log.w(TAG, "addDisplayPreference init 2 failed");
+                    return;
+                }
+
                 boolean currentDisplayEnable = mDisplayManager.getDisplayEnable(dispid);
                 if(DBG) Log.w(TAG,"currentDisplayEnable " +currentDisplayEnable);
                 mDisplayEnablePref[dispid].setChecked(currentDisplayEnable);
@@ -388,23 +498,17 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 mMirrorPref[dispid].setChecked(currentDisplayMirror);
                 mMirrorPref[dispid].setEnabled(false);
                 mMirrorPref[dispid].setOnPreferenceChangeListener(this);
-                
-                int currentDisplayOverScan = mDisplayManager.getDisplayOverScan(dispid);
-                if(DBG) Log.w(TAG,"currentDisplayOverScan " +currentDisplayOverScan);
-                mOverScanPref[dispid].setProgress(currentDisplayOverScan);
-                mOverScanPref[dispid].setOnPreferenceChangeListener(this);
-                //mOverScanPref[dispid].setEnabled(false);
-                
-                int currentDisplayColorDepth = mDisplayManager.getDisplayColorDepth(dispid);
-                if(DBG) Log.w(TAG,"currentDisplayColorDepth " +currentDisplayColorDepth);
-                mColorDepthPref[dispid].setValue(String.valueOf(currentDisplayColorDepth));
-                mColorDepthPref[dispid].setOnPreferenceChangeListener(this);
-                updateDisplayColorDepthPreferenceDescription(dispid, currentDisplayColorDepth);           
 
-            // set preference entry and value;
+                if(mColorDepthPref[dispid] != null && isHDMI)
+                    mColorDepthPref[dispid].setEnabled(true);
+            }
         } else {
-        
             // delete the preferenc entry and value;
+            if((mDisplayModePref[dispid] == null) || (mCategoryPref[dispid] == null)) {
+                Log.w(TAG, "addDisplayPreference init 3 failed");
+                return;
+            }
+
             ArrayList<CharSequence> revisedEntries = new ArrayList<CharSequence>();
             ArrayList<CharSequence> revisedValues = new ArrayList<CharSequence>();              
             mDisplayModePref[dispid].setEntries(
@@ -413,11 +517,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                     revisedValues.toArray(new CharSequence[revisedValues.size()]));     
             mDisplayModePref[dispid].setOnPreferenceChangeListener(this);
 
-            getPreferenceScreen().removePreference(mDisplayModePref[dispid]);
-            getPreferenceScreen().removePreference(mDisplayEnablePref[dispid]);
-            getPreferenceScreen().removePreference(mMirrorPref[dispid]);
-            getPreferenceScreen().removePreference(mOverScanPref[dispid]);
-            getPreferenceScreen().removePreference(mColorDepthPref[dispid]);
             getPreferenceScreen().removePreference(mCategoryPref[dispid]);
         }
     }
