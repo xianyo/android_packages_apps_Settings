@@ -56,21 +56,16 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
     private static final String TAG = "PluggableDisplaySettings";
     private static final boolean DBG = true;
 
-    private static final int DISPLAY_ENABLE_MSG = 1;
-    private static final int DISPLAY_MIRROR_MSG = 2;
-    private static final int DISPLAY_ROTATION_MSG = 3;
-    private static final int DISPLAY_OVERSCAN_MSG = 4;
-    private static final int DISPLAY_MODE_MSG = 5;    
-    private static final int DISPLAY_COLORDEPTH_MSG = 6;    
-    
     private static final int MAX_DISPLAY_DEVICE = 6;    
 
     private static final String[] KEY_DISPLAY_ENABLE     = {"display_enable_0","display_enable_1","display_enable_2",
                                                             "display_enable_3","display_enable_4","display_enable_5"};
     private static final String[] KEY_DISPLAY_MIRROR     = {"display_mirror_0","display_mirror_1","display_mirror_2",
                                                             "display_mirror_3","display_mirror_4","display_mirror_5"};
-    private static final String[] KEY_DISPLAY_OVERSCAN   = {"display_overscan_0","display_overscan_1","display_overscan_2",
-                                                            "display_overscan_3","display_overscan_4","display_overscan_5"};
+    private static final String[] KEY_DISPLAY_XOVERSCAN   = {"display_xoverscan_0","display_xoverscan_1","display_xoverscan_2",
+                                                            "display_xoverscan_3","display_xoverscan_4","display_xoverscan_5"};
+    private static final String[] KEY_DISPLAY_YOVERSCAN   = {"display_yoverscan_0","display_yoverscan_1","display_yoverscan_2",
+                                                            "display_yoverscan_3","display_yoverscan_4","display_yoverscan_5"};
     private static final String[] KEY_DISPLAY_MODE       = {"display_mode_0","display_mode_1","display_mode_2",
                                                             "display_mode_3","display_mode_4","display_mode_5"};
     private static final String[] KEY_DISPLAY_ROTATION   = {"display_rotation_0","display_rotation_1","display_rotation_2",
@@ -87,7 +82,8 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
     private CheckBoxPreference[] mDisplayEnablePref = new CheckBoxPreference[MAX_DISPLAY_DEVICE];
     private CheckBoxPreference[] mMirrorPref        = new CheckBoxPreference[MAX_DISPLAY_DEVICE];
     private CheckBoxPreference[] mRotationPref      = new CheckBoxPreference[MAX_DISPLAY_DEVICE];
-    private SeekBarPreference[]  mOverScanPref      = new SeekBarPreference[MAX_DISPLAY_DEVICE];
+    private SeekBarPreference[]  mXOverScanPref      = new SeekBarPreference[MAX_DISPLAY_DEVICE];
+    private SeekBarPreference[]  mYOverScanPref      = new SeekBarPreference[MAX_DISPLAY_DEVICE];
     private ListPreference[]     mDisplayModePref   = new ListPreference[MAX_DISPLAY_DEVICE];
     private ListPreference[]     mColorDepthPref    = new ListPreference[MAX_DISPLAY_DEVICE];
     private PreferenceCategory[] mCategoryPref      = new PreferenceCategory[MAX_DISPLAY_DEVICE];
@@ -131,7 +127,8 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             mDisplayModePref[i] = null;
             mDisplayEnablePref[i] = null;
             mMirrorPref[i] = null;
-            mOverScanPref[i] = null;
+            mXOverScanPref[i] = null;
+            mYOverScanPref[i] = null;
             mRotationPref[i] = null;
             mColorDepthPref[i] = null;
             mCategoryPref[i] = null;
@@ -172,46 +169,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
         preference.setSummary(String.format("%d bit", CurrentDisplayColorDepth));
     }
     
-    private Handler mHandler = new Handler() {
-        @Override public void handleMessage(Message msg) {
-            switch (msg.what){
-                case DISPLAY_ENABLE_MSG: {
-                
-                    break;
-                }
-                case DISPLAY_MIRROR_MSG: {
-                
-                    break;
-                }
-                case DISPLAY_ROTATION_MSG: {
-                
-                    break;
-                }            
-                case DISPLAY_OVERSCAN_MSG: {
-                    mDisplayManager.setDisplayOverScan(msg.arg1, msg.arg2);
-                    View rootView = getActivity().getWindow().peekDecorView();
-                    if(rootView != null) {
-                        rootView.postInvalidate();
-                    }
-                    break;
-                }            
-                case DISPLAY_MODE_MSG: {
-                
-                    break;
-                }
-                case DISPLAY_COLORDEPTH_MSG: {
-                
-                    break;
-                }
-                default:
-                    super.handleMessage(msg);            
-            }
-        
-        }
-    };
-
-
-
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         if(DBG) Log.w(TAG, "onPreferenceTreeClick ");
@@ -227,6 +184,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
         for(int i=0; i<MAX_DISPLAY_DEVICE; i++ ) {
             dispid = i;
             if (KEY_DISPLAY_MODE[i].equals(key)) {
+        if(DBG) Log.w(TAG, "onPreferenceChange mode dispid=" + i);
                 String value = (String) objValue;
                 mDisplayManager.setDisplayMode(dispid, value);
                 updateDisplayModePreferenceDescription(dispid, value);
@@ -235,41 +193,52 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             }
         
             if (KEY_DISPLAY_ENABLE[i].equals(key)) {
+        if(DBG) Log.w(TAG, "onPreferenceChange enable dispid=" + i);
                 boolean value = (Boolean) objValue;
                 mDisplayManager.setDisplayEnable(dispid, value);
                 break;
             }
         
             if (KEY_DISPLAY_MIRROR[i].equals(key)) {
+        if(DBG) Log.w(TAG, "onPreferenceChange mirror dispid=" + i);
                 boolean value = (Boolean) objValue;
                 mDisplayManager.setDisplayMirror(dispid, value);      
                 break;
             }
             
-            if (KEY_DISPLAY_OVERSCAN[i].equals(key)) {
+            if (KEY_DISPLAY_XOVERSCAN[i].equals(key)) {
+        if(DBG) Log.w(TAG, "onPreferenceChange xoverscan dispid=" + i);
                 int value = Integer.parseInt(objValue.toString());            
-                    mDisplayManager.setDisplayOverScan(dispid, value);
+                    mDisplayManager.setDisplayXOverScan(dispid, value);
                     View rootView = getActivity().getWindow().peekDecorView();
                     if(rootView != null) {
                         rootView.postInvalidateDelayed(200);
                     }
 
-                //Message msg = Message.obtain();
-                //msg.what = DISPLAY_OVERSCAN_MSG;
-                //msg.arg1 = dispid;
-                //msg.arg2 = value;
-                //mHandler.removeMessages(DISPLAY_OVERSCAN_MSG);
-                //mHandler.sendMessageDelayed(msg, 10);
+                break;
+            }
+
+            if (KEY_DISPLAY_YOVERSCAN[i].equals(key)) {
+        if(DBG) Log.w(TAG, "onPreferenceChange yoverscan dispid=" + i);
+                int value = Integer.parseInt(objValue.toString());            
+                    mDisplayManager.setDisplayYOverScan(dispid, value);
+                    View rootView = getActivity().getWindow().peekDecorView();
+                    if(rootView != null) {
+                        rootView.postInvalidateDelayed(200);
+                    }
+
                 break;
             }
 
             if (KEY_DISPLAY_ROTATION[i].equals(key)) {
+        if(DBG) Log.w(TAG, "onPreferenceChange rotation dispid=" + i);
                 boolean value = (Boolean) objValue;
                 mDisplayManager.setDisplayRotation(dispid, value);        
                 break;
             }
         
             if (KEY_DISPLAY_COLORDEPTH[i].equals(key)) {
+        if(DBG) Log.w(TAG, "onPreferenceChange colordepth dispid=" + i);
                 int value = Integer.parseInt((String) objValue);
                 mDisplayManager.setDisplayColorDepth(dispid, value);         
                 updateDisplayColorDepthPreferenceDescription(dispid, value);
@@ -460,24 +429,36 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 updateDisplayColorDepthPreferenceDescription(dispid, currentDisplayColorDepth);       
             }
             if(isHDMI) {
-                if(mOverScanPref[dispid] == null) {
-                    mOverScanPref[dispid] = new SeekBarPreference(getActivity());
-                    String dispStr = "display_overscan_" + dispid;
-                    mOverScanPref[dispid].setKey(dispStr);
-                    dispStr = "OverScan";
-                    mOverScanPref[dispid].setTitle(dispStr);
-                    int value = 15;
-                    mOverScanPref[dispid].setMax(value);
+                if(mXOverScanPref[dispid] == null) {
+                    mXOverScanPref[dispid] = new SeekBarPreference(getActivity());
+                    String dispStr = "display_xoverscan_" + dispid;
+                    mXOverScanPref[dispid].setKey(dispStr);
+                    dispStr = "Width OverScan";
+                    mXOverScanPref[dispid].setTitle(dispStr);
+                    int value = 30;
+                    mXOverScanPref[dispid].setMax(value);
                     value = 0;
-                    mOverScanPref[dispid].setProgress(value);
+                    mXOverScanPref[dispid].setProgress(value);
+                    mXOverScanPref[dispid].setPersistent(false);
 
-                    mOverScanPref[dispid].setOnPreferenceChangeListener(this);
-                    mCategoryPref[dispid].addPreference(mOverScanPref[dispid]);
+                    mXOverScanPref[dispid].setOnPreferenceChangeListener(this);
+                    mCategoryPref[dispid].addPreference(mXOverScanPref[dispid]);
                 }
-                int currentDisplayOverScan = mDisplayManager.getDisplayOverScan(dispid);
-                mOverScanPref[dispid].setProgress(currentDisplayOverScan);
-                mOverScanPref[dispid].setOnPreferenceChangeListener(this);
-                //mOverScanPref[dispid].setEnabled(false);
+                if(mYOverScanPref[dispid] == null) {
+                    mYOverScanPref[dispid] = new SeekBarPreference(getActivity());
+                    String dispStr = "display_yoverscan_" + dispid;
+                    mYOverScanPref[dispid].setKey(dispStr);
+                    dispStr = "Height OverScan";
+                    mYOverScanPref[dispid].setTitle(dispStr);
+                    int value = 30;
+                    mYOverScanPref[dispid].setMax(value);
+                    value = 0;
+                    mYOverScanPref[dispid].setProgress(value);
+                    mYOverScanPref[dispid].setPersistent(false);
+
+                    mYOverScanPref[dispid].setOnPreferenceChangeListener(this);
+                    mCategoryPref[dispid].addPreference(mYOverScanPref[dispid]);
+                }
             } else {
                 mColorDepthPref[dispid].setEnabled(false);
             }
