@@ -159,6 +159,32 @@
         <item>1.30</item>
     </string-array>
 
+    <string-array name="entries_primary_action_mode">
+        <item>Full Screen</item>
+        <item>16:9 Mode</item>
+        <item>4:3 Mode</item>
+    </string-array>
+
+    <string-array name="entryvalues_primary_action_mode" translatable="false">
+        <item>1000</item>
+        <item>4000</item>
+        <item>8000</item>
+    </string-array>
+
+    <string-array name="entries_action_mode">
+        <item>Full Screen</item>
+        <item>Keep Equal Proportion</item>
+        <item>16:9 Mode</item>
+        <item>4:3 Mode</item>
+    </string-array>
+
+    <string-array name="entryvalues_action_mode" translatable="false">
+        <item>1000</item>
+        <item>2000</item>
+        <item>4000</item>
+        <item>8000</item>
+    </string-array>
+
     <!-- display 0. -->
     <string-array name="entries_display_mode_0">
     </string-array>
