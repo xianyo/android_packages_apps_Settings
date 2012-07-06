@@ -504,7 +504,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                     mXOverScanPref[dispid].setTitle(dispStr);
                     int value = 30;
                     mXOverScanPref[dispid].setMax(value);
-                    value = 0;
+                    value = mDisplayManager.getDisplayXOverScan(dispid);
                     mXOverScanPref[dispid].setProgress(value);
                     mXOverScanPref[dispid].setPersistent(false);
 
@@ -519,7 +519,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                     mYOverScanPref[dispid].setTitle(dispStr);
                     int value = 30;
                     mYOverScanPref[dispid].setMax(value);
-                    value = 0;
+                    value = mDisplayManager.getDisplayYOverScan(dispid);
                     mYOverScanPref[dispid].setProgress(value);
                     mYOverScanPref[dispid].setPersistent(false);
 
