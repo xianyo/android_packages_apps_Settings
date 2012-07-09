@@ -76,6 +76,9 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                                                             "display_keeprate_3","display_keeprate_4","display_keeprate_5"};
     private static final String[] KEY_DISPLAY_CATEGORY   = {"display_category_0","display_category_1","display_category_2",
                                                             "display_category_3","display_category_4","display_category_5"};
+    private String mHighMode = null;
+    private static final String DISPLAY_HIGH_MODE = "keepHighestMode";
+    private static final String DISPLAY_HIGH_MODE_ENTRY = "Keep Highest Mode";
 
     private DisplayManager mDisplayManager;
     
@@ -83,6 +86,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
 
     private CheckBoxPreference[] mDisplayEnablePref = new CheckBoxPreference[MAX_DISPLAY_DEVICE];
     private CheckBoxPreference[] mMirrorPref        = new CheckBoxPreference[MAX_DISPLAY_DEVICE];
+    private CheckBoxPreference[] mKeepHModePref        = new CheckBoxPreference[MAX_DISPLAY_DEVICE];
     private CheckBoxPreference[] mRotationPref      = new CheckBoxPreference[MAX_DISPLAY_DEVICE];
     private SeekBarPreference[]  mXOverScanPref      = new SeekBarPreference[MAX_DISPLAY_DEVICE];
     private SeekBarPreference[]  mYOverScanPref      = new SeekBarPreference[MAX_DISPLAY_DEVICE];
@@ -130,6 +134,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             mDisplayModePref[i] = null;
             mDisplayEnablePref[i] = null;
             mMirrorPref[i] = null;
+            mKeepHModePref[i] = null;
             mXOverScanPref[i] = null;
             mYOverScanPref[i] = null;
             mRotationPref[i] = null;
@@ -165,6 +170,9 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
 
     private void updateDisplayModePreferenceDescription(int dispid, String CurrentDisplayMode) {
         ListPreference preference = mDisplayModePref[dispid];
+        if(DISPLAY_HIGH_MODE.equals(CurrentDisplayMode)) {
+            CurrentDisplayMode = mHighMode;
+        }
         preference.setSummary(CurrentDisplayMode);
     }
 
@@ -429,11 +437,19 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             mCategoryPref[dispid].setTitle(displayName);
 
             String currentDisplayMode = mDisplayManager.getDisplayMode(dispid);
-
             display_modes = mDisplayManager.getDisplayModeList(dispid);
+            if(display_modes == null) {
+                Log.e(TAG, "display_modes is no valid");
+                return;
+            }
+            mHighMode = display_modes[0];
             
             ArrayList<CharSequence> revisedEntries = new ArrayList<CharSequence>();
-            ArrayList<CharSequence> revisedValues = new ArrayList<CharSequence>();            
+            ArrayList<CharSequence> revisedValues = new ArrayList<CharSequence>();
+
+            revisedEntries.add(DISPLAY_HIGH_MODE_ENTRY);
+            revisedValues.add(DISPLAY_HIGH_MODE);
+
             for (String imode : display_modes) {
                 revisedEntries.add(imode);
                 revisedValues.add(imode);
@@ -502,11 +518,11 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
 
 		    dispKey = "display_keeprate_" + dispid;
 		    mKeepRatePref[dispid].setKey(dispKey);
-		    dispTitle = "Action Mode";
+		    dispTitle = "Aspect Ratio";
 		    mKeepRatePref[dispid].setTitle(dispTitle);
-		    dispSummary = "action mode";
+		    dispSummary = "aspect ration";
 		    mKeepRatePref[dispid].setSummary(dispSummary);
-		    dispDialogTitle = "Action Mode";
+		    dispDialogTitle = "Aspect Ratio";
 		    mKeepRatePref[dispid].setDialogTitle(dispDialogTitle);
 
 		    mKeepRatePref[dispid].setOnPreferenceChangeListener(this);
