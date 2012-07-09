@@ -343,41 +343,6 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
         mColorDepthPref[fbid].setOnPreferenceChangeListener(this);
         mCategoryPref[fbid].addPreference(mColorDepthPref[fbid]);
 
-	if(mKeepRatePref[fbid] == null) {
-            int entry;
-            int entryVal;
-	    mKeepRatePref[fbid] = new ListPreference(getActivity());
-
-	    dispKey = "display_keeprate_" + fbid;
-	    mKeepRatePref[fbid].setKey(dispKey);
-	    dispTitle = "Action Mode";
-	    mKeepRatePref[fbid].setTitle(dispTitle);
-	    dispSummary = "action mode";
-	    mKeepRatePref[fbid].setSummary(dispSummary);
-	    dispDialogTitle = "Action Mode";
-	    mKeepRatePref[fbid].setDialogTitle(dispDialogTitle);
-
-	    mKeepRatePref[fbid].setOnPreferenceChangeListener(this);
-	    mCategoryPref[fbid].addPreference(mKeepRatePref[fbid]);
-
-	    if(fbid == 0) {
-		entry = R.array.entries_primary_action_mode;
-		entryVal = R.array.entryvalues_primary_action_mode;
-	    } else {
-		entry = R.array.entries_action_mode;
-		entryVal = R.array.entryvalues_action_mode;
-	    }
-	    if(entry < 0 || entryVal < 0) {
-		mKeepRatePref[fbid].setEnabled(false);
-	    } else {
-		mKeepRatePref[fbid].setEntries(entry);
-		mKeepRatePref[fbid].setEntryValues(entryVal);
-		int keepRate = mDisplayManager.getDisplayKeepRate(fbid);
-		mKeepRatePref[fbid].setValue(Integer.toHexString(keepRate));
-		updateActionModePreferenceDescription(fbid, mKeepRatePref[fbid].getEntry());
-	    }
-        }
-
     }
 
     private int getDisplayColorEntry(int dispid) {
@@ -526,6 +491,45 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                     mYOverScanPref[dispid].setOnPreferenceChangeListener(this);
                     mCategoryPref[dispid].addPreference(mYOverScanPref[dispid]);
                 }
+
+		if(mKeepRatePref[dispid] == null) {
+		    String dispKey = null;
+		    String dispTitle = null;
+		    String dispSummary = null;
+		    String dispDialogTitle = null;
+
+		    mKeepRatePref[dispid] = new ListPreference(getActivity());
+
+		    dispKey = "display_keeprate_" + dispid;
+		    mKeepRatePref[dispid].setKey(dispKey);
+		    dispTitle = "Action Mode";
+		    mKeepRatePref[dispid].setTitle(dispTitle);
+		    dispSummary = "action mode";
+		    mKeepRatePref[dispid].setSummary(dispSummary);
+		    dispDialogTitle = "Action Mode";
+		    mKeepRatePref[dispid].setDialogTitle(dispDialogTitle);
+
+		    mKeepRatePref[dispid].setOnPreferenceChangeListener(this);
+		    mCategoryPref[dispid].addPreference(mKeepRatePref[dispid]);
+
+		    if(dispid == 0) {
+			entry = R.array.entries_primary_action_mode;
+			entryVal = R.array.entryvalues_primary_action_mode;
+		    } else {
+			entry = R.array.entries_action_mode;
+			entryVal = R.array.entryvalues_action_mode;
+		    }
+		    if(entry < 0 || entryVal < 0) {
+			mKeepRatePref[dispid].setEnabled(false);
+		    } else {
+			mKeepRatePref[dispid].setEntries(entry);
+			mKeepRatePref[dispid].setEntryValues(entryVal);
+			int keepRate = mDisplayManager.getDisplayKeepRate(dispid);
+			mKeepRatePref[dispid].setValue(Integer.toHexString(keepRate));
+			updateActionModePreferenceDescription(dispid, mKeepRatePref[dispid].getEntry());
+		    }
+		}
+
 
             } else {
                 mColorDepthPref[dispid].setEnabled(false);
