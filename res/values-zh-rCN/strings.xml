@@ -1580,4 +1580,16 @@
     <string name="backup_pw_cancel_button_text" msgid="8845630125391744615">"取消"</string>
     <string name="percentage" msgid="5866131581207788624">"<xliff:g id="NUMBER">%d</xliff:g>%%"</string>
     <string name="additional_system_update_settings_list_item_title" msgid="214987609894661992">"其他系统更新"</string>
+    <string name="pluggable_display_settings">高级显示</string>
+    <string name="pluggable_settings_primary_display">主屏</string>
+    <string name="pluggable_settings_added_dislay">附加屏</string>
+    <string name="pluggable_settings_display_hdmi">高清电视</string>
+    <string name="pluggable_settings_display_ldb">液晶显示屏</string>
+    <string name="pluggable_settings_display_mode">调整分辨率</string>
+    <string name="pluggable_settings_colordepth">调整颜色深度</string>
+    <string name="pluggable_settings_enable_display">打开屏</string>
+    <string name="pluggable_settings_width_overscan">调整宽越界</string>
+    <string name="pluggable_settings_height_overscan">调整高越界</string>
+    <string name="pluggable_settings_aspect_ratio">调整显示比例</string>
+    <string name="pluggable_settings_keep_highest_mode">保持最高分辨率</string>
 </resources>

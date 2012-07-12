@@ -193,8 +193,8 @@
     </string-array>
 
     <string-array name="entries_display_colordepth_0">
-        <item>16</item>
-        <item>32</item>
+        <item>16 bit</item>
+        <item>32 bit</item>
     </string-array>
 
     <string-array name="entryvalues_display_colordepth_0" translatable="false">
@@ -209,8 +209,8 @@
     </string-array>
 
     <string-array name="entries_display_colordepth_1">
-        <item>16</item>
-        <item>32</item>
+        <item>16 bit</item>
+        <item>32 bit</item>
     </string-array>
 
     <string-array name="entryvalues_display_colordepth_1" translatable="false">
@@ -225,8 +225,8 @@
     </string-array>
 
     <string-array name="entries_display_colordepth_2">
-        <item>16</item>
-        <item>32</item>
+        <item>16 bit</item>
+        <item>32 bit</item>
     </string-array>
 
     <string-array name="entryvalues_display_colordepth_2" translatable="false">
@@ -241,8 +241,8 @@
     </string-array>
 
     <string-array name="entries_display_colordepth_3">
-        <item>16</item>
-        <item>32</item>
+        <item>16 bit</item>
+        <item>32 bit</item>
     </string-array>
 
     <string-array name="entryvalues_display_colordepth_3" translatable="false">
@@ -257,8 +257,8 @@
     </string-array>
 
     <string-array name="entries_display_colordepth_4">
-        <item>16</item>
-        <item>32</item>
+        <item>16 bit</item>
+        <item>32 bit</item>
     </string-array>
 
     <string-array name="entryvalues_display_colordepth_4" translatable="false">
@@ -273,8 +273,8 @@
     </string-array>
 
     <string-array name="entries_display_colordepth_5">
-        <item>16</item>
-        <item>32</item>
+        <item>16 bit</item>
+        <item>32 bit</item>
     </string-array>
 
     <string-array name="entryvalues_display_colordepth_5" translatable="false">

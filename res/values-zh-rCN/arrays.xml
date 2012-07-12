@@ -273,4 +273,42 @@
     <item msgid="4042143101664725090">"超时"</item>
     <item msgid="7664124146786465092">"失败"</item>
   </string-array>
+
+  <string-array name="entries_primary_action_mode">
+      <item>全屏模式</item>
+      <item>16:9模式</item>
+      <item>4:3模式</item>
+  </string-array>
+  <string-array name="entries_action_mode">
+      <item>全屏模式</item>
+      <item>保持宽高比</item>
+      <item>16:9模式</item>
+      <item>4:3模式</item>
+  </string-array>
+
+  <string-array name="entries_display_colordepth_0">
+      <item>16位</item>
+      <item>32位</item>
+  </string-array>
+  <string-array name="entries_display_colordepth_1">
+      <item>16位</item>
+      <item>32位</item>
+  </string-array>
+  <string-array name="entries_display_colordepth_2">
+      <item>16位</item>
+      <item>32位</item>
+  </string-array>
+  <string-array name="entries_display_colordepth_3">
+      <item>16位</item>
+      <item>32位</item>
+  </string-array>
+  <string-array name="entries_display_colordepth_4">
+      <item>16位</item>
+      <item>32位</item>
+  </string-array>
+  <string-array name="entries_display_colordepth_5">
+      <item>16位</item>
+      <item>32位</item>
+  </string-array>
+
 </resources>

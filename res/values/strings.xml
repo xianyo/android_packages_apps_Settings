@@ -1652,6 +1652,18 @@
 
     <string name="pluggable_display_settings">Advanced Display</string>
 
+    <string name="pluggable_settings_primary_display">primary display</string>
+    <string name="pluggable_settings_added_dislay">added display</string>
+    <string name="pluggable_settings_display_hdmi">HDMI</string>
+    <string name="pluggable_settings_display_ldb">LCD</string>
+    <string name="pluggable_settings_display_mode">Display Mode</string>
+    <string name="pluggable_settings_colordepth">Color Depth</string>
+    <string name="pluggable_settings_enable_display">Enable Display</string>
+    <string name="pluggable_settings_width_overscan">Width OverScan</string>
+    <string name="pluggable_settings_height_overscan">Height OverScan</string>
+    <string name="pluggable_settings_aspect_ratio">Aspect Ratio</string>
+    <string name="pluggable_settings_keep_highest_mode">Keep Highest Mode</string>
+
     <string name="pluggable_display_category_title_1">Display 1</string>
     <string name="display_enable_title_1">Enable Display</string>
     <string name="display_mirror_title_1">Mirror</string>
