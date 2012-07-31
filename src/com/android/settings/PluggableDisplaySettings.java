@@ -178,6 +178,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
 
     private void updateDisplayColorDepthPreferenceDescription(int dispid,int CurrentDisplayColorDepth) {
         ListPreference preference = mColorDepthPref[dispid];
+        mColorDepthPref[dispid].setValue(String.valueOf(CurrentDisplayColorDepth));
         preference.setSummary(mColorDepthPref[dispid].getEntry());
     }
     
