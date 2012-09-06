@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/*
+ * Copyright (C) 2012 Freescale Semiconductor, Inc.
+ */
+
 package com.android.settings;
 
 import android.app.AlertDialog;
@@ -77,6 +81,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
     private static final String[] KEY_DISPLAY_CATEGORY   = {"display_category_0","display_category_1","display_category_2",
                                                             "display_category_3","display_category_4","display_category_5"};
     private String mHighMode = null;
+    private String mCurrentMode = null;
     private static final String DISPLAY_HIGH_MODE = "keepHighestMode";
     private static final String DISPLAY_HIGH_MODE_ENTRY = "Keep Highest Mode";
 
@@ -203,22 +208,34 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
             dispid = i;
             if (KEY_DISPLAY_MODE[i].equals(key)) {
                 String value = (String) objValue;
-                mDisplayManager.setDisplayMode(dispid, value);
                 //special case for mode change
                 //it should reset keeprate overscan.
-                if(mKeepRatePref[dispid] != null) {
-                    int keepRate = mDisplayManager.getDisplayKeepRate(dispid);
-                    mKeepRatePref[dispid].setValue(Integer.toHexString(keepRate));
-                    updateActionModePreferenceDescription(dispid, mKeepRatePref[dispid].getEntry());;
+                boolean modeChanged = true;
+                String lastMode = mCurrentMode;
+                mCurrentMode = value;
+
+                if(lastMode.equals(DISPLAY_HIGH_MODE) && mCurrentMode.equals(mHighMode)) {
+                    modeChanged = false;
+                }
+                if(lastMode.equals(mHighMode) && mCurrentMode.equals(DISPLAY_HIGH_MODE)) {
+                    modeChanged = false;
                 }
 
-                if(mXOverScanPref[dispid] != null) {
-                    mXOverScanPref[dispid].setProgress(0);
-                }
-                if(mYOverScanPref[dispid] != null) {
-                    mYOverScanPref[dispid].setProgress(0);
-                }
+                if(modeChanged) {
+                    mDisplayManager.setDisplayMode(dispid, value);
+                    if(mKeepRatePref[dispid] != null) {
+                        int keepRate = mDisplayManager.getDisplayKeepRate(dispid);
+                        mKeepRatePref[dispid].setValue(Integer.toHexString(keepRate));
+                        updateActionModePreferenceDescription(dispid, mKeepRatePref[dispid].getEntry());
+                    }
 
+                    if(mXOverScanPref[dispid] != null) {
+                        mXOverScanPref[dispid].setProgress(0);
+                    }
+                    if(mYOverScanPref[dispid] != null) {
+                        mYOverScanPref[dispid].setProgress(0);
+                    }
+                }
                 updateDisplayModePreferenceDescription(dispid, value);
 
                 break;
@@ -448,6 +465,7 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 return;
             }
             mHighMode = display_modes[0];
+            mCurrentMode = currentDisplayMode;
             
             ArrayList<CharSequence> revisedEntries = new ArrayList<CharSequence>();
             ArrayList<CharSequence> revisedValues = new ArrayList<CharSequence>();
