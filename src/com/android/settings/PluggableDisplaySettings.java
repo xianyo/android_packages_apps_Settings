@@ -80,8 +80,8 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                                                             "display_keeprate_3","display_keeprate_4","display_keeprate_5"};
     private static final String[] KEY_DISPLAY_CATEGORY   = {"display_category_0","display_category_1","display_category_2",
                                                             "display_category_3","display_category_4","display_category_5"};
-    private String mHighMode = null;
-    private String mCurrentMode = null;
+    private String[] mHighMode = new String[MAX_DISPLAY_DEVICE];
+    private String[] mCurrentMode = new String[MAX_DISPLAY_DEVICE];
     private static final String DISPLAY_HIGH_MODE = "keepHighestMode";
     private static final String DISPLAY_HIGH_MODE_ENTRY = "Keep Highest Mode";
 
@@ -175,8 +175,8 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
 
     private void updateDisplayModePreferenceDescription(int dispid, String CurrentDisplayMode) {
         ListPreference preference = mDisplayModePref[dispid];
-        if(DISPLAY_HIGH_MODE.equals(CurrentDisplayMode)) {
-            CurrentDisplayMode = mHighMode;
+        if(DISPLAY_HIGH_MODE.equals(CurrentDisplayMode) && !mHighMode[dispid].isEmpty()) {
+            CurrentDisplayMode = mHighMode[dispid];
         }
         preference.setSummary(CurrentDisplayMode);
     }
@@ -211,13 +211,22 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 //special case for mode change
                 //it should reset keeprate overscan.
                 boolean modeChanged = true;
-                String lastMode = mCurrentMode;
-                mCurrentMode = value;
+                String lastMode = mCurrentMode[i];
+                mCurrentMode[i] = value;
+                if(lastMode.isEmpty()) {
+                    lastMode = value;
+                }
+                if(mHighMode[i].isEmpty()) {
+                    mHighMode[i] = value;
+                }
 
-                if(lastMode.equals(DISPLAY_HIGH_MODE) && mCurrentMode.equals(mHighMode)) {
+                if(lastMode.equals(DISPLAY_HIGH_MODE) && mCurrentMode[i].equals(mHighMode[i])) {
                     modeChanged = false;
                 }
-                if(lastMode.equals(mHighMode) && mCurrentMode.equals(DISPLAY_HIGH_MODE)) {
+                if(lastMode.equals(mHighMode[i]) && mCurrentMode[i].equals(DISPLAY_HIGH_MODE)) {
+                    modeChanged = false;
+                }
+                if(lastMode.equals(mCurrentMode[i])) {
                     modeChanged = false;
                 }
 
@@ -464,8 +473,8 @@ public class PluggableDisplaySettings extends SettingsPreferenceFragment impleme
                 Log.e(TAG, "display_modes is no valid");
                 return;
             }
-            mHighMode = display_modes[0];
-            mCurrentMode = currentDisplayMode;
+            mHighMode[dispid] = display_modes[0];
+            mCurrentMode[dispid] = currentDisplayMode;
             
             ArrayList<CharSequence> revisedEntries = new ArrayList<CharSequence>();
             ArrayList<CharSequence> revisedValues = new ArrayList<CharSequence>();
