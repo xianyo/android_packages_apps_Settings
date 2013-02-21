@@ -1,6 +1,8 @@
 /*
  * Copyright (C) 2012 The Android Open Source Project
  *
+ * Copyright (C) 2013 Freescale Semiconductor, Inc.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -95,7 +97,7 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment {
         mActionBarSwitch = new Switch(activity);
         if (activity instanceof PreferenceActivity) {
             PreferenceActivity preferenceActivity = (PreferenceActivity) activity;
-            if (preferenceActivity.onIsHidingHeaders() || !preferenceActivity.onIsMultiPane()) {
+//            if (preferenceActivity.onIsHidingHeaders() || !preferenceActivity.onIsMultiPane()) {
                 final int padding = activity.getResources().getDimensionPixelSize(
                         R.dimen.action_bar_switch_padding);
                 mActionBarSwitch.setPadding(0, 0, padding, 0);
@@ -106,7 +108,7 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment {
                                 ActionBar.LayoutParams.WRAP_CONTENT,
                                 ActionBar.LayoutParams.WRAP_CONTENT,
                                 Gravity.CENTER_VERTICAL | Gravity.END));
-            }
+//            }
         }
 
         mActionBarSwitch.setOnCheckedChangeListener(mSwitchOnCheckedChangedListener);
