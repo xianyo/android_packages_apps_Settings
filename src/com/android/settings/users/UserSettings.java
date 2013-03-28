@@ -406,8 +406,10 @@ public class UserSettings extends SettingsPreferenceFragment
                     synchronized (mUserLock) {
                         mAddingUser = false;
                         mHandler.sendEmptyMessage(MESSAGE_UPDATE_LIST);
-                        mHandler.sendMessage(mHandler.obtainMessage(
-                                MESSAGE_SETUP_USER, user.id, user.serialNumber));
+                        if (user != null) {
+                            mHandler.sendMessage(mHandler.obtainMessage(
+                                    MESSAGE_SETUP_USER, user.id, user.serialNumber));
+                        }
                     }
                 }
             }.start();
