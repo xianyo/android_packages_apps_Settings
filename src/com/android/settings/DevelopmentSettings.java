@@ -112,6 +112,7 @@ public class DevelopmentSettings extends PreferenceFragment
     private static final String SHOW_SCREEN_UPDATES_KEY = "show_screen_updates";
     private static final String DISABLE_OVERLAYS_KEY = "disable_overlays";
     private static final String SHOW_CPU_USAGE_KEY = "show_cpu_usage";
+    private static final String SHOW_SYSTEM_TIME_KEY = "show_cpu_system_time";
     private static final String FORCE_HARDWARE_UI_KEY = "force_hw_ui";
     private static final String FORCE_MSAA_KEY = "force_msaa";
     private static final String TRACK_FRAME_TIME_KEY = "track_frame_time";
@@ -172,6 +173,7 @@ public class DevelopmentSettings extends PreferenceFragment
     private CheckBoxPreference mShowScreenUpdates;
     private CheckBoxPreference mDisableOverlays;
     private CheckBoxPreference mShowCpuUsage;
+    private CheckBoxPreference mShowSystemTime;
     private CheckBoxPreference mForceHardwareUi;
     private CheckBoxPreference mForceMsaa;
     private CheckBoxPreference mShowHwScreenUpdates;
@@ -266,6 +268,7 @@ public class DevelopmentSettings extends PreferenceFragment
         mShowScreenUpdates = findAndInitCheckboxPref(SHOW_SCREEN_UPDATES_KEY);
         mDisableOverlays = findAndInitCheckboxPref(DISABLE_OVERLAYS_KEY);
         mShowCpuUsage = findAndInitCheckboxPref(SHOW_CPU_USAGE_KEY);
+        mShowSystemTime = findAndInitCheckboxPref(SHOW_SYSTEM_TIME_KEY);
         mForceHardwareUi = findAndInitCheckboxPref(FORCE_HARDWARE_UI_KEY);
         mForceMsaa = findAndInitCheckboxPref(FORCE_MSAA_KEY);
         mTrackFrameTime = addListPreference(TRACK_FRAME_TIME_KEY);
@@ -846,13 +849,24 @@ public class DevelopmentSettings extends PreferenceFragment
         updateCheckBox(mShowCpuUsage, Settings.Global.getInt(getActivity().getContentResolver(),
                 Settings.Global.SHOW_PROCESSES, 0) != 0);
     }
-    
+
     private void writeCpuUsageOptions() {
         boolean value = mShowCpuUsage.isChecked();
         Settings.Global.putInt(getActivity().getContentResolver(),
                 Settings.Global.SHOW_PROCESSES, value ? 1 : 0);
         Intent service = (new Intent())
                 .setClassName("com.android.systemui", "com.android.systemui.LoadAverageService");
+        if (value) {
+            getActivity().startService(service);
+        } else {
+            getActivity().stopService(service);
+        }
+    }
+
+    private void writeSystemTimeOptions(){
+       boolean value = mShowSystemTime.isChecked();
+       Intent service = (new Intent())
+                .setClassName("com.android.systemui", "com.android.systemui.LoadSystemTime");
         if (value) {
             getActivity().startService(service);
         } else {
@@ -1124,6 +1138,8 @@ public class DevelopmentSettings extends PreferenceFragment
             writeDisableOverlaysOption();
         } else if (preference == mShowCpuUsage) {
             writeCpuUsageOptions();
+        } else if (preference == mShowSystemTime){
+            writeSystemTimeOptions();
         } else if (preference == mImmediatelyDestroyActivities) {
             writeImmediatelyDestroyActivitiesOptions();
         } else if (preference == mShowAllANRs) {
