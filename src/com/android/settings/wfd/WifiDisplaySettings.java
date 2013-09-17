@@ -343,7 +343,6 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment {
             mWifiDisplayOnSetting = isChecked;
             Settings.Global.putInt(getContentResolver(),
                     Settings.Global.WIFI_DISPLAY_ON, isChecked ? 1 : 0);
-            mDisplayManager.scanWifiDisplays();
         }
     };
 
