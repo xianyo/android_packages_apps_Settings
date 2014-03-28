@@ -201,6 +201,13 @@
         android:id="@+id/system_section"
         android:title="@string/header_category_system" >
 
+        <!-- Superuser -->
+        <dashboard-tile
+            android:id="@+id/superuser"
+            android:fragment="com.android.settings.cyanogenmod.superuser.PolicyNativeFragment"
+            android:icon="@drawable/ic_action_permission"
+            android:title="@string/superuser" />
+
         <!-- Date & Time -->
         <dashboard-tile
                 android:id="@+id/date_time_settings"
