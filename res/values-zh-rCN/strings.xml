@@ -2512,4 +2512,6 @@
     <string name="imei_information_title" msgid="8499085421609752290">"IMEI信息"</string>
     <string name="imei_information_summary" msgid="2074095606556565233">"IMEI相关信息"</string>
     <string name="slot_number" msgid="3762676044904653577">"（插槽<xliff:g id="SLOT_NUM">%1$d</xliff:g>）"</string>
+    <string name="show_system_time">"显示系统时间"</string>
+    <string name="show_system_time_summary">"屏幕叠加显示系统当前时间"</string>
 </resources>
